@@ -122,7 +122,6 @@ NeopolitanAudioProcessorEditor::NeopolitanAudioProcessorEditor(NeopolitanAudioPr
     // editor's size to whatever you need it to be.
     setSize (1024, 720);
 
-    FlavorCode flavor = Vanilla;
     for (auto& knob : _flavorKnobs)
     {
         addAndMakeVisible(knob);

@@ -57,7 +57,6 @@ private:
         // access the processor object that created it.
         NeopolitanAudioProcessor& audioProcessor;
         std::array<FlavorKnob, Num_Flavors> _flavorKnobs;
-        int count = 0;
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NeopolitanAudioProcessorEditor)
     };
