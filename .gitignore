@@ -1,6 +1,12 @@
-Builds/
+[Bb]uilds/
+build/
+[Ll]ib/
+[Ll]ibs/
+
 JuceLibraryCode/
 .vscode/
+ScrapAssets/
+
 .DS_Store
 
 Projucer.exe
