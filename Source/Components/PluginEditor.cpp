@@ -11,6 +11,8 @@
 #include "PluginProcessor.h"
 
 //==============================================================================
+namespace Neopolitan
+{
 
 FlavorKnob::FlavorKnob()
 {
@@ -169,4 +171,6 @@ void NeopolitanAudioProcessorEditor::resized()
    {
       knob.resized();
    }
+}
+
 }

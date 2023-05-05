@@ -13,7 +13,8 @@
 //==============================================================================
 /**
  */
-
+namespace Neopolitan
+{
 class NeopolitanAudioProcessor : public juce::AudioProcessor
 #if JucePlugin_Enable_ARA
    ,
@@ -62,3 +63,5 @@ class NeopolitanAudioProcessor : public juce::AudioProcessor
    //==============================================================================
    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NeopolitanAudioProcessor)
 };
+
+}

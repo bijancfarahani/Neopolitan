@@ -10,19 +10,13 @@
 
 #include <JuceHeader.h>
 
+#include "Constants.h"
 #include "PluginProcessor.h"
-
 //==============================================================================
 /**
  */
-
-enum FlavorCode : uint8_t {
-   Vanilla,
-   Strawberry,
-   Chocolate,
-   Num_Flavors
-};
-
+namespace Neopolitan
+{
 class FlavorKnob : public juce::Component
 {
    public:
@@ -60,3 +54,4 @@ class NeopolitanAudioProcessorEditor : public juce::AudioProcessorEditor
    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(
       NeopolitanAudioProcessorEditor)
 };
+}

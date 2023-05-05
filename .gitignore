@@ -11,4 +11,5 @@ ScrapAssets/
 
 .DS_Store
 
+*.jucer
 Projucer.exe

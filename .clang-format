@@ -24,6 +24,7 @@ BreakBeforeBraces: Custom
 BraceWrapping: # Allman except for lambdas
   AfterClass: true
   AfterCaseLabel: true
+  AfterEnum: true
   AfterFunction: true
   AfterNamespace: true
   AfterStruct: true
@@ -49,7 +50,7 @@ KeepEmptyLinesAtTheStartOfBlocks: false
 Language: Cpp
 MaxEmptyLinesToKeep: 1
 FixNamespaceComments: false
-NamespaceIndentation: All
+NamespaceIndentation: Inner
 PointerAlignment: Left
 ReflowComments: false
 SortIncludes: true

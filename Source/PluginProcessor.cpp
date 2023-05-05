@@ -10,6 +10,8 @@
 
 #include "PluginEditor.h"
 
+namespace Neopolitan
+{
 //==============================================================================
 
 NeopolitanAudioProcessor::NeopolitanAudioProcessor()
@@ -195,11 +197,12 @@ void NeopolitanAudioProcessor::setStateInformation(const void* data,
    // block, whose contents will have been created by the getStateInformation()
    // call.
 }
+} // End of namespace Neopolitan.
 
 //==============================================================================
 // This creates new instances of the plugin..
 juce::AudioProcessor* JUCE_CALLTYPE
    createPluginFilter()
 {
-   return new NeopolitanAudioProcessor();
+   return new Neopolitan::NeopolitanAudioProcessor();
 }
