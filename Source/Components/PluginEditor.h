@@ -10,30 +10,15 @@
 
 #include <JuceHeader.h>
 
-#include "Constants.h"
 #include "PluginProcessor.h"
+
+#include "FlavorKnob.h"
+#include "NeopolitanConstants.h"
 //==============================================================================
 /**
  */
 namespace Neopolitan
 {
-class FlavorKnob : public juce::Component
-{
-   public:
-   FlavorKnob();
-
-   void initialize(FlavorCode flavorCode);
-
-   void paint(juce::Graphics&) override;
-   void resized() override;
-
-   private:
-   FlavorCode   _flavorCode;
-   juce::Label  _nameLabel;
-   juce::Slider _gainSlider;
-   juce::Image  _iceCreamImage;
-   juce::Image  _sprinkleImage;
-};
 
 class NeopolitanAudioProcessorEditor : public juce::AudioProcessorEditor
 {

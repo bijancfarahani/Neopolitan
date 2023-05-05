@@ -1,6 +1,9 @@
+#pragma once
+
+
 namespace Neopolitan
 {
-enum FlavorCode : uint8_t
+enum FlavorCode : unsigned
 {
    Vanilla,
    Strawberry,
