@@ -7,7 +7,6 @@
 */
 
 #include "PluginEditor.h"
-
 #include "PluginProcessor.h"
 
 //==============================================================================
@@ -21,6 +20,9 @@ NeopolitanAudioProcessorEditor::NeopolitanAudioProcessorEditor(
    // Make sure that before the constructor has finished, you've set the
    // editor's size to whatever you need it to be.
    setSize(1024, 720);
+
+   _mainScene.setSize(getWidth(), getHeight());
+   addAndMakeVisible(_mainScene);
 }
 
 NeopolitanAudioProcessorEditor::~NeopolitanAudioProcessorEditor() {}

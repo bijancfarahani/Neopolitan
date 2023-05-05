@@ -5,6 +5,9 @@ namespace Neopolitan
 
 FlavorKnob::FlavorKnob()
 {
+   setSize(300, 300);
+   _gainDial.setSize(300, 300);
+
    addAndMakeVisible(_nameLabel);
    _gainDial.setSliderStyle(juce::Slider::Rotary);
    addAndMakeVisible(_gainDial);
@@ -54,11 +57,6 @@ void FlavorKnob::initialize(FlavorCode flavorCode)
 
       break;
    }
-   default:
-   {
-      _flavorName = "You fucked up";
-      break;
-   }
    }
    _nameLabel.setText(_flavorName, juce::dontSendNotification);
 
@@ -71,28 +69,34 @@ void FlavorKnob::initialize(FlavorCode flavorCode)
 
 void FlavorKnob::paint(juce::Graphics& g)
 {
+   int x = 0;
    switch (_flavorCode)
    {
    case Vanilla:
    {
-      g.drawImageAt(_iceCreamImage, 200, 200);
-      g.drawImageAt(_sprinkleImage, 200, 200);
+      x = 200;
+      break;
    }
    case Strawberry:
    {
+      x = 350;
+      break;
    }
    case Chocolate:
    {
-   }
-   default:
-   {
-      // TODO: Paint a PATO.
+      x = 500;
+      break;
    }
    }
+   g.drawImageAt(_iceCreamImage, x, 200);
+   g.drawImageAt(_sprinkleImage, x, 200);
 }
 
 void FlavorKnob::resized()
 {
+   auto area = getLocalBounds();
+
+   _gainDial.setBounds(area.reduced(10));
    switch (_flavorCode)
    {
    case Vanilla:
@@ -104,10 +108,6 @@ void FlavorKnob::resized()
    }
    case Chocolate:
    {
-   }
-   default:
-   {
-      // TODO: Paint a PATO.
    }
    }
 }
