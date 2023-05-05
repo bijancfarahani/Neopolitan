@@ -6,10 +6,9 @@ namespace Neopolitan
 FlavorKnob::FlavorKnob()
 {
    addAndMakeVisible(_nameLabel);
-   addAndMakeVisible(_gainSlider);
+   _gainDial.setSliderStyle(juce::Slider::Rotary);
+   addAndMakeVisible(_gainDial);
 }
-
-
 
 void FlavorKnob::initialize(FlavorCode flavorCode)
 {
@@ -63,11 +62,11 @@ void FlavorKnob::initialize(FlavorCode flavorCode)
    }
    _nameLabel.setText(_flavorName, juce::dontSendNotification);
 
-   _gainSlider.setTextValueSuffix("dB");
-   //_gainSlider.onValueChange = [idx, &slider, this] { _flavorLevels[idx] =
+   _gainDial.setTextValueSuffix("dB");
+   //_gainDial.onValueChange = [idx, &slider, this] { _flavorLevels[idx] =
    // juce::Decibels::decibelsToGain((float)slider.getValue()); };
-   _gainSlider.setRange(-100.0f, 0.0f);
-   _gainSlider.setValue(-100.0f, juce::dontSendNotification);
+   _gainDial.setRange(-100.0f, 0.0f);
+   _gainDial.setValue(-100.0f, juce::dontSendNotification);
 }
 
 void FlavorKnob::paint(juce::Graphics& g)

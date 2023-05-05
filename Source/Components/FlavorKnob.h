@@ -1,14 +1,14 @@
 #pragma once
 
-#include <JuceHeader.h>
 #include "NeopolitanConstants.h"
+#include <JuceHeader.h>
 
 namespace Neopolitan
 {
 
 class FlavorKnob : public juce::Component
 {
-   public:
+public:
    FlavorKnob();
 
    void initialize(FlavorCode flavorCode);
@@ -16,10 +16,10 @@ class FlavorKnob : public juce::Component
    void paint(juce::Graphics&) override;
    void resized() override;
 
-   private:
+private:
    FlavorCode   _flavorCode;
    juce::Label  _nameLabel;
-   juce::Slider _gainSlider;
+   juce::Slider _gainDial;
    juce::Image  _iceCreamImage;
    juce::Image  _sprinkleImage;
 };

@@ -13,6 +13,7 @@ target_sources("${PROJECT_NAME}"
         FlavorKnob.h
         FlavorKnob.cpp
         MainScene.h
+        MainScene.cpp
         PluginEditor.h
         PluginEditor.cpp
 )

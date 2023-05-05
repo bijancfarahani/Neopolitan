@@ -1,8 +1,8 @@
 #pragma once
 
-
 namespace Neopolitan
 {
+
 enum FlavorCode : unsigned
 {
    Vanilla,
@@ -10,4 +10,5 @@ enum FlavorCode : unsigned
    Chocolate,
    Num_Flavors
 };
+
 }
