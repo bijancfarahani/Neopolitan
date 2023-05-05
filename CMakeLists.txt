@@ -2,11 +2,14 @@
 
 cmake_minimum_required(VERSION 3.15)
 
-project(Neopolitan VERSION 0.0.1)
+project(Neopolitan 
+   VERSION 0.0.1
+   LANGUAGES CXX
+   DESCRIPTION "A tasty plugin"
+)
 
 
 ### Dependency versions ###
-
 set(LIB_JUCE_TAG "7.0.5")
 
 
@@ -61,12 +64,12 @@ FetchContent_MakeAvailable(juce)
 juce_add_plugin("${PROJECT_NAME}"
     FORMATS AU VST3 Standalone                  # The formats to build. Valid formats: Standalone Unity VST3 AU AUv3 AAX VST LV2.
                                                 # AU and AUv3 plugins will only be enabled when building on macOS.
-    PRODUCT_NAME "NeopolitanApp"              # The name of the final executable, which can differ from the target name.
+    PRODUCT_NAME "NeopolitanPlugin"              # The name of the final executable, which can differ from the target name.
     # PLUGIN_NAME                               # Name of the plugin that will be displayed in the DAW. Can differ from PRODUCT_NAME.
 
     # ICON_BIG                                  # ICON_* arguments specify a path to an image file to use as an icon for the Standalone.
     # ICON_SMALL
-    COMPANY_NAME yourcompany                    # The name of this target's author. The value is inherited from JUCE_COMPANY_NAME.
+    COMPANY_NAME studioB                    # The name of this target's author. The value is inherited from JUCE_COMPANY_NAME.
     # COMPANY_WEBSITE                           # The address of a website related to this target in some way.
                                                 # The value is inherited from JUCE_COMPANY_WEBSITE.
     # COMPANY_EMAIL                             # An email address for this target's author. The value is inherited from JUCE_COMPANY_EMAIL.
@@ -97,7 +100,7 @@ juce_add_plugin("${PROJECT_NAME}"
 
 # Set the C++ language standard requirenment for the "shared code" library target.
 # Setting this to PUBLIC ensures that all dependent targets will inherit the specified C++ standard.
-target_compile_features("${PROJECT_NAME}" PUBLIC cxx_std_17)
+target_compile_features("${PROJECT_NAME}" PUBLIC cxx_std_20)
 
 # Disable compiler extensions for the project targets (e.g. use -std=c++17 instead of -std=gnu++17).
 get_property(project_targets DIRECTORY "${PROJECT_SOURCE_DIR}" PROPERTY BUILDSYSTEM_TARGETS)
