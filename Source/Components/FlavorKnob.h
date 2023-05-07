@@ -1,5 +1,6 @@
 #pragma once
 
+#include "DecibelSlider.h"
 #include "NeopolitanConstants.h"
 #include <JuceHeader.h>
 
@@ -17,11 +18,10 @@ public:
    void resized() override;
 
 private:
-   FlavorCode   _flavorCode;
-   juce::Label  _nameLabel;
-   juce::Slider _gainDial;
-   juce::Image  _iceCreamImage;
-   juce::Image  _sprinkleImage;
+   FlavorCode    _flavorCode;
+   DecibelSlider _gainDial;
+   juce::Image   _iceCreamImage;
+   juce::Image   _sprinkleImage;
 };
 
 }

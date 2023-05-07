@@ -8,8 +8,9 @@
 
 #pragma once
 
+#include "Data/FlavorNoiseGenerator.h"
+#include "NeopolitanConstants.h"
 #include <JuceHeader.h>
-
 //==============================================================================
 /**
  */
@@ -60,6 +61,8 @@ public:
    void setStateInformation(const void* data, int sizeInBytes) override;
 
 private:
+juce::AudioProcessorValueTreeState _pluginParameters;
+   FlavorNoiseGenerator _flavorNoiseGenerators;
    //==============================================================================
    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NeopolitanAudioProcessor)
 };

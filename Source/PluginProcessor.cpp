@@ -25,6 +25,12 @@ NeopolitanAudioProcessor::NeopolitanAudioProcessor()
          .withOutput("Output", juce::AudioChannelSet::stereo(), true)
    #endif
    )
+   , _pluginParameters(*this, nullptr, juce::Identifier("NeopolitanPluginParameters"),
+   {
+      std::make_unique<juce::AudioParameterFloat>("gain","Gain",
+      0.0f, 1.0f, 0.5f)
+
+   })
 #endif
 {
 }
@@ -166,7 +172,15 @@ void NeopolitanAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
    {
       auto* channelData = buffer.getWritePointer(channel);
 
-      // ..do something to the data...
+      // Fill the required number of samples with noise between -0.125 and +0.125
+      for (auto sample = 0; sample < totalNumOutputChannels; ++sample)
+      {
+         auto noiseSample = _flavorNoiseGenerators.getSample();
+         std::cout << "sample : " << noiseSample << std::endl;
+
+         channelData[sample] = noiseSample;
+      }
+      // buffer[sample] = random.nextFloat() * 0.25f - 0.125f;
    }
 }
 
@@ -179,7 +193,7 @@ bool NeopolitanAudioProcessor::hasEditor() const
 juce::AudioProcessorEditor*
    NeopolitanAudioProcessor::createEditor()
 {
-   return new NeopolitanAudioProcessorEditor(*this);
+   return new NeopolitanAudioProcessorEditor(*this, _pluginParameters);
 }
 
 //==============================================================================

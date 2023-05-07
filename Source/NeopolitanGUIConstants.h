@@ -1,5 +1,5 @@
 #pragma once
-#include <initializer_list>
+
 namespace Neopolitan
 {
 namespace GUI

@@ -24,7 +24,7 @@ namespace Neopolitan
 class NeopolitanAudioProcessorEditor : public juce::AudioProcessorEditor
 {
 public:
-   NeopolitanAudioProcessorEditor(NeopolitanAudioProcessor&);
+   NeopolitanAudioProcessorEditor(NeopolitanAudioProcessor& audioProcessor, juce::AudioProcessorValueTreeState& valueTreeState);
    ~NeopolitanAudioProcessorEditor() override;
 
    //==============================================================================
@@ -34,7 +34,9 @@ public:
 private:
    // This reference is provided as a quick way for your editor to
    // access the processor object that created it.
-   NeopolitanAudioProcessor& audioProcessor;
+   NeopolitanAudioProcessor& _audioProcessor;
+   juce::AudioProcessorValueTreeState& _valueStateTree;
+
    MainScene                 _mainScene;
 
    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(

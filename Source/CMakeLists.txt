@@ -17,3 +17,4 @@ target_sources("${PROJECT_NAME}"
 
 # Add subdirectories with source files, if present
 add_subdirectory(Components)
+add_subdirectory(Data)

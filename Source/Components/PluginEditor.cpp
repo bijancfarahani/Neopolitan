@@ -14,8 +14,9 @@ namespace Neopolitan
 {
 
 NeopolitanAudioProcessorEditor::NeopolitanAudioProcessorEditor(
-   NeopolitanAudioProcessor& p)
-   : AudioProcessorEditor(&p), audioProcessor(p), _mainScene()
+   NeopolitanAudioProcessor& p, juce::AudioProcessorValueTreeState& valueStateTree)
+   : AudioProcessorEditor(&p), _audioProcessor(p), _mainScene(),
+   _valueStateTree(valueStateTree)
 {
    // Make sure that before the constructor has finished, you've set the
    // editor's size to whatever you need it to be.

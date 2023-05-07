@@ -11,4 +11,6 @@ enum FlavorCode : unsigned
    Chocolate
 };
 
+constexpr auto Negative_Infinity_dB = -100.0f;
+
 }

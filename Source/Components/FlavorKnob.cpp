@@ -3,14 +3,24 @@
 namespace Neopolitan
 {
 
-FlavorKnob::FlavorKnob()
+FlavorKnob::FlavorKnob() : _gainDial()
 {
    setSize(300, 300);
-   _gainDial.setSize(300, 300);
 
-   addAndMakeVisible(_nameLabel);
-   _gainDial.setSliderStyle(juce::Slider::Rotary);
+   // Visuals
+   // Configure the rotary dials on each flavor knob.
    addAndMakeVisible(_gainDial);
+   //_gainDial.addListener(this);
+   _gainDial.setSize(300, 300);
+   _gainDial.setSliderStyle(juce::Slider::Rotary);
+   _gainDial.setTextValueSuffix("dB");
+   // Controls
+   //_gainDial.onValueChange = [idx, &slider, this] { _flavorLevels[idx] =
+   // juce::Decibels::decibelsToGain((float)slider.getValue()); };
+   _gainDial.setRange(Negative_Infinity_dB, -12);
+   //_gainDial.setValue(-100.0f, juce::dontSendNotification);
+   _gainDial.setValue(juce::Decibels::gainToDecibels(_gainDial.VolumeLevel()));
+   _gainDial.onValueChange = [this] { _gainDial.setVolumeLevel(juce::Decibels::decibelsToGain(static_cast<float>(_gainDial.getValue()))); };
 }
 
 void FlavorKnob::initialize(FlavorCode flavorCode)
@@ -18,12 +28,13 @@ void FlavorKnob::initialize(FlavorCode flavorCode)
    _flavorCode = flavorCode;
 
    // Set the label name with the flavor.
+   // actually dont
    juce::String _flavorName {};
    switch (flavorCode)
    {
    case Vanilla:
    {
-      _flavorName    = "Vanilla";
+      _flavorName    = "Vanilla"; // remove these
       _iceCreamImage = juce::ImageFileFormat::loadFrom(
          BinaryData::icecream_circle1_png,
          BinaryData::icecream_circle1_pngSize);
@@ -58,13 +69,7 @@ void FlavorKnob::initialize(FlavorCode flavorCode)
       break;
    }
    }
-   _nameLabel.setText(_flavorName, juce::dontSendNotification);
-
-   _gainDial.setTextValueSuffix("dB");
-   //_gainDial.onValueChange = [idx, &slider, this] { _flavorLevels[idx] =
-   // juce::Decibels::decibelsToGain((float)slider.getValue()); };
-   _gainDial.setRange(-100.0f, 0.0f);
-   _gainDial.setValue(-100.0f, juce::dontSendNotification);
+   //_nameLabel.setText(_flavorName, juce::dontSendNotification);
 }
 
 void FlavorKnob::paint(juce::Graphics& g)
