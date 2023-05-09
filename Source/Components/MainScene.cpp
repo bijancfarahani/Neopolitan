@@ -10,7 +10,7 @@ MainScene::MainScene()
 
    for (auto& knob : _flavorKnobs)
    {
-      addAndMakeVisible(knob);
+     // addAndMakeVisible(knob);
    }
    _flavorKnobs[Vanilla].initialize(Vanilla);
    _flavorKnobs[Strawberry].initialize(Strawberry);

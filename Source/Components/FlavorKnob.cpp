@@ -88,8 +88,8 @@ void FlavorKnob::paint(juce::Graphics& g)
       break;
    }
    }
-   g.drawImageAt(_iceCreamImage, x, 200);
-   g.drawImageAt(_sprinkleImage, x, 200);
+   //g.drawImageAt(_iceCreamImage, x, 200);
+   //g.drawImageAt(_sprinkleImage, x, 200);
 }
 
 void FlavorKnob::resized()
