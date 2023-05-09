@@ -15,20 +15,12 @@ namespace Neopolitan
 
 NeopolitanAudioProcessorEditor::NeopolitanAudioProcessorEditor(
    NeopolitanAudioProcessor& p)
-   : AudioProcessorEditor(&p), audioProcessor(p), _mainScene(),
-   sliders{AttachedSlider(p, param::PID::GainWet), AttachedSlider(p, param::PID::Frequency)}
+   : AudioProcessorEditor(&p), audioProcessor(p), _mainScene(p)
 {
-   // Make sure that before the constructor has finished, you've set the
-   // editor's size to whatever you need it to be.
-   setSize(1024, 720);
-    for (auto i = 0; i < sliders.size(); ++i)
-    {
-        auto& slider = sliders[i];
+   setSize(GUI::DEFAULT_WINDOW_WIDTH, GUI::DEFAULT_WINDOW_HEIGHT);
 
-       addAndMakeVisible(slider.slider);
-    }
    _mainScene.setSize(getWidth(), getHeight());
-   //addAndMakeVisible(_mainScene);
+   addAndMakeVisible(_mainScene);
 }
 
 NeopolitanAudioProcessorEditor::~NeopolitanAudioProcessorEditor() {}

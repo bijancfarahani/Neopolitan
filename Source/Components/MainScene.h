@@ -16,13 +16,13 @@ namespace Neopolitan
 class MainScene : public juce::Component
 {
 public:
-   MainScene();
+   MainScene(NeopolitanAudioProcessor&);
 
    void paint(juce::Graphics& g) override;
    void resized() override;
 
 private:
-   std::array<FlavorKnob, Num_Flavors> _flavorKnobs {};
+   std::array<FlavorKnob, Num_Flavors> _flavorKnobs;
 
    juce::TextButton _header;
 };

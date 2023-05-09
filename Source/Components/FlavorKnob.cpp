@@ -3,14 +3,13 @@
 namespace Neopolitan
 {
 
-FlavorKnob::FlavorKnob()
+FlavorKnob::FlavorKnob(NeopolitanAudioProcessor& pluginProcessor, param::PID pID) : _gainDial(pluginProcessor, pID)
 {
-   setSize(300, 300);
-   _gainDial.setSize(300, 300);
+   //setSize(300, 300);
+   // _gainDial.slider.setSize(300, 300);
 
    addAndMakeVisible(_nameLabel);
-   _gainDial.setSliderStyle(juce::Slider::Rotary);
-   addAndMakeVisible(_gainDial);
+   addAndMakeVisible(_gainDial.slider);
 }
 
 void FlavorKnob::initialize(FlavorCode flavorCode)
@@ -60,11 +59,11 @@ void FlavorKnob::initialize(FlavorCode flavorCode)
    }
    _nameLabel.setText(_flavorName, juce::dontSendNotification);
 
-   _gainDial.setTextValueSuffix("dB");
+   // _gainDial.setTextValueSuffix("dB");
    //_gainDial.onValueChange = [idx, &slider, this] { _flavorLevels[idx] =
    // juce::Decibels::decibelsToGain((float)slider.getValue()); };
-   _gainDial.setRange(-100.0f, 0.0f);
-   _gainDial.setValue(-100.0f, juce::dontSendNotification);
+   //_gainDial.setRange(-100.0f, 0.0f);
+   //_gainDial.setValue(-100.0f, juce::dontSendNotification);
 }
 
 void FlavorKnob::paint(juce::Graphics& g)
@@ -94,22 +93,7 @@ void FlavorKnob::paint(juce::Graphics& g)
 
 void FlavorKnob::resized()
 {
-   auto area = getLocalBounds();
-
-   _gainDial.setBounds(area.reduced(10));
-   switch (_flavorCode)
-   {
-   case Vanilla:
-   {
-      setBounds(256, 360, 150, 150);
-   }
-   case Strawberry:
-   {
-   }
-   case Chocolate:
-   {
-   }
-   }
+   _gainDial.slider.setBounds(juce::Rectangle<float>(0, 0, getWidth(), getHeight()).toNearestInt());
 }
 
 }

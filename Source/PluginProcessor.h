@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include <JuceHeader.h>
 #include "PluginParameters.h"
+#include <JuceHeader.h>
 
 //==============================================================================
 /**
@@ -23,8 +23,8 @@ class NeopolitanAudioProcessor : public juce::AudioProcessor
 #endif
 {
 public:
-    using RAPPtr = juce::RangedAudioParameter*;
-    using RAPPtrArray = std::array<RAPPtr, param::NumParams>;
+   using RAPPtr      = juce::RangedAudioParameter*;
+   using RAPPtrArray = std::array<RAPPtr, param::NumParams>;
 
    //==============================================================================
    NeopolitanAudioProcessor();
@@ -63,12 +63,13 @@ public:
    void getStateInformation(juce::MemoryBlock& destData) override;
    void setStateInformation(const void* data, int sizeInBytes) override;
 
-   RAPPtrArray Params() {return params;}
+   RAPPtrArray Params() { return params; }
+
 private:
    //==============================================================================
 
-       juce::AudioProcessorValueTreeState apvts;
-    RAPPtrArray params;
+   juce::AudioProcessorValueTreeState apvts;
+   RAPPtrArray                        params;
 
    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NeopolitanAudioProcessor)
 };

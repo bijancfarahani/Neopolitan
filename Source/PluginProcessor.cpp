@@ -24,16 +24,17 @@ NeopolitanAudioProcessor::NeopolitanAudioProcessor()
       #endif
          .withOutput("Output", juce::AudioChannelSet::stereo(), true)
    #endif
-   ),
-	apvts(*this, nullptr, "Parameters", param::createParameterLayout()), params()
+         ),
+     apvts(*this, nullptr, "Parameters", param::createParameterLayout()),
+     params()
 #endif
 {
-       for (auto i = 0; i < param::NumParams; ++i)
-    {
-		const auto pID = static_cast<param::PID>(i);
-        const auto id = param::toID(pID);
-        params[i] = apvts.getParameter(id);
-    }
+   for (auto i = 0; i < param::NumParams; ++i)
+   {
+      const auto pID = static_cast<param::PID>(i);
+      const auto id  = param::toID(pID);
+      params[i]      = apvts.getParameter(id);
+   }
 }
 
 NeopolitanAudioProcessor::~NeopolitanAudioProcessor() {}
@@ -178,11 +179,11 @@ void NeopolitanAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
 
    // Apply gain.
    const auto gainWetPID = static_cast<int>(param::PID::GainWet);
-    const auto gainDbNorm = params[gainWetPID]->getValue();
-    const auto gainDb = params[gainWetPID]->getNormalisableRange().convertFrom0to1(gainDbNorm);
-    const auto gain = juce::Decibels::decibelsToGain(gainDb);
-    std::cout << "Gain:: " << gain <<  std::endl;
-    buffer.applyGain(gain);
+   const auto gainDbNorm = params[gainWetPID]->getValue();
+   const auto gainDb     = params[gainWetPID]->getNormalisableRange().convertFrom0to1(gainDbNorm);
+   const auto gain       = juce::Decibels::decibelsToGain(gainDb);
+   std::cout << "Gain:: " << gain << std::endl;
+   buffer.applyGain(gain);
 }
 
 //==============================================================================
