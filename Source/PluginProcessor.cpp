@@ -170,11 +170,26 @@ void NeopolitanAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
    // the samples and the outer loop is handling the channels.
    // Alternatively, you can process the samples with the channels
    // interleaved by keeping the same state.
+   auto applyGain = [this](const auto& pID) {
+      // Apply gain.
+      const auto gainWetPID = static_cast<int>(pID);
+      const auto gainDbNorm = params[gainWetPID]->getValue();
+      const auto gainDb     = params[gainWetPID]->getNormalisableRange().convertFrom0to1(gainDbNorm);
+      const auto gain       = juce::Decibels::decibelsToGain(gainDb);
+      return gain;
+   };
+
    for (int channel = 0; channel < totalNumInputChannels; ++channel)
    {
       auto* channelData = buffer.getWritePointer(channel);
 
-      // ..do something to the data...
+      // Fill the required number of samples with noise between -0.125 and +0.125
+      for (auto sample = 0; sample < buffer.getNumSamples(); ++sample)
+      {
+         auto whiteNoiseSample = _random.nextFloat() * 0.25f - 0.125f;
+         whiteNoiseSample *= applyGain(param::PID::Vanilla_Mix);
+            channelData[sample] = whiteNoiseSample;
+      }
    }
 
    // Apply gain.
@@ -182,8 +197,6 @@ void NeopolitanAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
    const auto gainDbNorm = params[gainWetPID]->getValue();
    const auto gainDb     = params[gainWetPID]->getNormalisableRange().convertFrom0to1(gainDbNorm);
    const auto gain       = juce::Decibels::decibelsToGain(gainDb);
-   std::cout << "Gain:: " << gain << std::endl;
-   buffer.applyGain(gain);
 }
 
 //==============================================================================

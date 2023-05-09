@@ -231,7 +231,7 @@ inline Layout createParameterLayout()
 
    createParam(params, PID::GainWet, range::lin(-12.f, 12.f), 0.f, Unit::Db);
 
-   createParam(params, PID::Vanilla_Mix, range::lin(-12.f, 12.f), 0.f, Unit::Db);
+   createParam(params, PID::Vanilla_Mix, range::lin(-100.f, 0.f), -18.f, Unit::Db);
    createParam(params, PID::Chocolate_Mix, range::lin(-12.f, 12.f), 0.f, Unit::Db);
    createParam(params, PID::Strawberry_Mix, range::lin(-12.f, 12.f), 0.f, Unit::Db);
 

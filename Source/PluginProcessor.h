@@ -70,6 +70,7 @@ private:
 
    juce::AudioProcessorValueTreeState apvts;
    RAPPtrArray                        params;
+   juce::Random                       _random;
 
    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NeopolitanAudioProcessor)
 };
