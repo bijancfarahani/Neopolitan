@@ -15,7 +15,7 @@ namespace Neopolitan
 
 NeopolitanAudioProcessorEditor::NeopolitanAudioProcessorEditor(
    NeopolitanAudioProcessor& p)
-   : AudioProcessorEditor(&p), audioProcessor(p), _mainScene(p)
+   : AudioProcessorEditor(&p), audioProcessor(p), _mainScene(p, _lookAndFeel)
 {
    setSize(GUI::DEFAULT_WINDOW_WIDTH, GUI::DEFAULT_WINDOW_HEIGHT);
 

@@ -24,7 +24,7 @@ class NeopolitanAudioProcessor : public juce::AudioProcessor
 {
 public:
    using RAPPtr      = juce::RangedAudioParameter*;
-   using RAPPtrArray = std::array<RAPPtr, param::NumParams>;
+   using RAPPtrArray = std::array<RAPPtr, PluginParams::NumParams>;
 
    //==============================================================================
    NeopolitanAudioProcessor();

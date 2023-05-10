@@ -4,11 +4,11 @@
 
 namespace Neopolitan
 {
-MainScene::MainScene(NeopolitanAudioProcessor& pluginProcessor)
+MainScene::MainScene(NeopolitanAudioProcessor& pluginProcessor, NeopolitanLookAndFeel& lookAndFeel)
    : _flavorKnobs {
-        FlavorKnob(pluginProcessor, param::PID::Vanilla_Mix),
-        FlavorKnob(pluginProcessor, param::PID::Strawberry_Mix),
-        FlavorKnob(pluginProcessor, param::PID::Chocolate_Mix)
+        FlavorKnob(pluginProcessor, PluginParams::PID::Vanilla_Mix, lookAndFeel),
+        FlavorKnob(pluginProcessor, PluginParams::PID::Strawberry_Mix, lookAndFeel),
+        FlavorKnob(pluginProcessor, PluginParams::PID::Chocolate_Mix, lookAndFeel)
      }
 {
    _header.setColour(juce::TextButton::buttonColourId, juce::Colours::orange);

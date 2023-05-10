@@ -2,7 +2,7 @@
 
 cmake_minimum_required(VERSION 3.15)
 
-project(Neopolitan 
+project(Neopolitan
    VERSION 0.0.1
    LANGUAGES CXX
    DESCRIPTION "A tasty plugin"
@@ -132,21 +132,21 @@ target_compile_definitions("${PROJECT_NAME}"
 # If your target needs extra binary assets, you can add them here.
 # NOTE: Conversion to binary-data happens when the target is built.
 
-juce_add_binary_data(Assets       # Name of a static library target that will include all the binary resources
-    # HEADER_NAME ...               # Name of the generated header. "BinaryData.h" is used by default
-    # NAMESPACE ...                 # Namespace of the generated binary data class. "BinaryData" is used by default
-   SOURCES
-        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_cone.png
-        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_circle1.png
-        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_circle2.png
-        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_circle3.png
-        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle1.png
-        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle2.png
-        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle3.png
-        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle4.png
-        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle5.png
-        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle6.png
-)                    # List of asset files of any kind that should be built into the static library
+#juce_add_binary_data(Assets       # Name of a static library target that will include all the binary resources
+#    # HEADER_NAME ...               # Name of the generated header. "BinaryData.h" is used by default
+#    # NAMESPACE ...                 # Namespace of the generated binary data class. "BinaryData" is used by default
+#   SOURCES
+#        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_cone.png
+#        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_circle1.png
+#        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_circle2.png
+#        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_circle3.png
+#        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle1.png
+#        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle2.png
+#        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle3.png
+#        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle4.png
+#        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle5.png
+#        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle6.png
+#)                    # List of asset files of any kind that should be built into the static library
 
 # `target_link_libraries` links libraries and JUCE modules to other libraries or executables. Here,
 # we're linking our executable target to the `juce::juce_audio_utils` module. Inter-module
@@ -154,7 +154,7 @@ juce_add_binary_data(Assets       # Name of a static library target that will in
 
 target_link_libraries("${PROJECT_NAME}"
     PRIVATE
-        Assets                # If we'd created a binary data target, we'd link to it here
+        #Assets                # If we'd created a binary data target, we'd link to it here
         juce::juce_audio_utils
     PUBLIC
         juce::juce_recommended_config_flags

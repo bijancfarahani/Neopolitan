@@ -3,6 +3,7 @@
 #include "FlavorKnob.h"
 #include "NeopolitanConstants.h"
 #include "NeopolitanGUIConstants.h"
+#include "NeopolitanLookAndFeel.h"
 #include <JuceHeader.h>
 
 namespace Neopolitan
@@ -16,7 +17,7 @@ namespace Neopolitan
 class MainScene : public juce::Component
 {
 public:
-   MainScene(NeopolitanAudioProcessor&);
+   MainScene(NeopolitanAudioProcessor&, NeopolitanLookAndFeel&);
 
    void paint(juce::Graphics& g) override;
    void resized() override;

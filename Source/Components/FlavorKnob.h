@@ -1,6 +1,7 @@
 #pragma once
 
 #include "NeopolitanConstants.h"
+#include "NeopolitanLookAndFeel.h"
 #include "PluginProcessor.h"
 #include <JuceHeader.h>
 
@@ -12,10 +13,11 @@ struct AttachedSlider
    using Attachment = juce::SliderParameterAttachment;
    using Component  = juce::Component;
 
-   AttachedSlider(NeopolitanAudioProcessor& processor, param::PID pID) : slider(),
-                                                                         attachment(*processor.Params()[static_cast<int>(pID)], slider, nullptr)
+   AttachedSlider(NeopolitanAudioProcessor& processor, NeopolitanLookAndFeel& lookAndFeel, PluginParams::PID pID) : slider(),
+                                                                                                                    attachment(*processor.Params()[static_cast<int>(pID)], slider, nullptr)
    {
       slider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
+      slider.setLookAndFeel(&lookAndFeel);
    }
 
    Slider     slider;
@@ -24,7 +26,7 @@ struct AttachedSlider
 class FlavorKnob : public juce::Component
 {
 public:
-   FlavorKnob(NeopolitanAudioProcessor& processor, param::PID pID);
+   FlavorKnob(NeopolitanAudioProcessor& processor, PluginParams::PID pID, NeopolitanLookAndFeel& lookAndFeel);
 
    void initialize(FlavorCode flavorCode);
 
