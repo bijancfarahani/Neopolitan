@@ -22,14 +22,10 @@ public:
       auto rw      = radius * 2.0f;
       auto angle   = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
 
-      // fill
-      g.setColour(juce::Colours::orange);
-      g.fillEllipse(rx, ry, rw, rw);
-
       // outline
       g.setColour(juce::Colours::red);
       g.drawEllipse(rx, ry, rw, rw, 1.0f);
-
+      g.fillEllipse(rx, ry, rw, rw);
       juce::Path p;
       auto       pointerLength    = radius * 0.33f;
       auto       pointerThickness = 2.0f;
@@ -40,6 +36,8 @@ public:
       g.setColour(juce::Colours::yellow);
       g.fillPath(p);
    }
+
+   juce::Colour _flavorColour {};
 };
 
 }

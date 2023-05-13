@@ -1,6 +1,9 @@
 #pragma once
 
 #include <JuceHeader.h>
+//##include "magic"
+//#inclu
+#include "magic_enum.hpp"
 #include <variant>
 
 namespace Neopolitan
@@ -14,6 +17,7 @@ namespace PluginParams
    using APP              = juce::AudioProcessorParameter;
    using APF              = juce::AudioParameterFloat;
    using RangeF           = juce::NormalisableRange<float>;
+
 
    enum class PID
    {
@@ -35,22 +39,9 @@ namespace PluginParams
 
    inline juce::String toName(PID pID)
    {
-      switch (pID)
-      {
-      case PID::GainWet:
-         return "Gain Wet";
-      case PID::Frequency:
-         return "Frequency";
-      case PID::Vanilla_Mix:
-         return "Vanilla";
-      case PID::Strawberry_Mix:
-         return "Strawberry";
-      case PID::Chocolate_Mix:
-         return "Chocolate";
-      default:
-         return "Unknown, you may fail a JUCE static assertion for duplicate parameter names";
-      }
+      return juce::String(magic_enum::enum_name(pID).data());
    }
+
 
    inline juce::String toID(const juce::String& name)
    {
@@ -252,6 +243,9 @@ namespace PluginParams
          valToStrFunc,
          strToValFunc));
    }
+
+
+
 
    // Factory of sorts for all the 'knobs and switches' and whatever
    // other types of controls we expose for interaction (both with

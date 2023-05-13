@@ -7,7 +7,6 @@
 */
 
 #include "PluginProcessor.h"
-
 #include "PluginEditor.h"
 
 namespace Neopolitan
@@ -187,16 +186,14 @@ void NeopolitanAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
       for (auto sample = 0; sample < buffer.getNumSamples(); ++sample)
       {
          auto whiteNoiseSample = _random.nextFloat() * 0.25f - 0.125f;
+         // apply flavor gain
          whiteNoiseSample *= applyGain(PluginParams::PID::Vanilla_Mix);
          channelData[sample] = whiteNoiseSample;
+
+         // apply output gain
+         applyGain(PluginParams::PID::GainWet);
       }
    }
-
-   // Apply gain.
-   const auto gainWetPID = static_cast<int>(PluginParams::PID::GainWet);
-   const auto gainDbNorm = params[gainWetPID]->getValue();
-   const auto gainDb     = params[gainWetPID]->getNormalisableRange().convertFrom0to1(gainDbNorm);
-   const auto gain       = juce::Decibels::decibelsToGain(gainDb);
 }
 
 //==============================================================================

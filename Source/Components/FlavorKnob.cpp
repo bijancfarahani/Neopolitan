@@ -19,6 +19,7 @@ void FlavorKnob::initialize(FlavorCode flavorCode)
 
 void FlavorKnob::paint(juce::Graphics& g)
 {
+   // fill
 }
 
 void FlavorKnob::resized()
