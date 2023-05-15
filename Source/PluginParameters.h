@@ -10,6 +10,8 @@ namespace Neopolitan
 {
 namespace PluginParams
 {
+   constexpr int NEOPOLITAN_PLUGIN_PARAMETER_VERSION = 1;
+
    using APVTS            = juce::AudioProcessorValueTreeState;
    using RangedAudioParam = juce::RangedAudioParameter;
    using UniqueRAP        = std::unique_ptr<RangedAudioParam>;
@@ -25,21 +27,21 @@ namespace PluginParams
       Frequency,
       Vanilla_Mix,
       Strawberry_Mix,
-      Chocolate_Mix,
-      NumParams
+      Chocolate_Mix
    };
-   static constexpr int NumParams = static_cast<int>(PID::NumParams);
+   constexpr int NumParams = magic_enum::enum_count<PID>();
 
    enum class Unit
    {
       Db,
-      Hz,
-      NumUnits
+      Hz
    };
 
    inline juce::String toName(PID pID)
    {
-      return juce::String(magic_enum::enum_name(pID).data());
+      auto ret = juce::String(magic_enum::enum_name(pID).data());
+      std::cout << "ret: " << ret << std::endl;
+      return ret;
    }
 
 
@@ -234,7 +236,7 @@ namespace PluginParams
       }
 
       vec.emplace_back(std::make_unique<APF>(
-         id,
+         juce::ParameterID{id, NEOPOLITAN_PLUGIN_PARAMETER_VERSION},
          name,
          range,
          defaultVal,

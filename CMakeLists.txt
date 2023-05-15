@@ -11,7 +11,7 @@ cmake_policy(SET CMP0091 NEW)
 
 # Set Project details.
 project(Neopolitan
-   VERSION 0.0.1
+   VERSION 1.0.0
    LANGUAGES CXX
    DESCRIPTION "A tasty plugin"
 )
