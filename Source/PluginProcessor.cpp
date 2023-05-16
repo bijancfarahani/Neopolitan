@@ -167,6 +167,10 @@ void NeopolitanAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
       auto* channelData = buffer.getWritePointer(channel);
 
       // ..do something to the data...
+      for(int sample = 0; samples < buffer.getNumSamples(); ++samples)
+      {
+         channelData[samples] = buffer.getSample(channel, sample) * rawVolume;
+      }
    }
 }
 

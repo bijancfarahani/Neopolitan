@@ -23,8 +23,37 @@ NeopolitanAudioProcessorEditor::NeopolitanAudioProcessorEditor(
 
    _mainScene.setSize(getWidth(), getHeight());
    addAndMakeVisible(_mainScene);
+
+   addAndMakeVisible(gainSlider);
+       gainSlider.setSliderStyle(Juce::Slider::StiderStyle::LinearVertical);
+    gainSlider.setTextBoxStyle(Juce::Slider::TextBoxBelow, true, 100, 25);
+    gainSlider.setRange(-48.0, 0.0);
+    gainSlider.setValue(-1.0);
+    gainSlider.addListener(this);
+    addAndMakeVisible(gainSlider);
 }
 
 NeopolitanAudioProcessorEditor::~NeopolitanAudioProcessorEditor() {}
+
+//==============================================================================
+
+void NeopolitanAudioProcessorEditor::resized() 
+{
+     gainSlider.setBounds(getLocalBounds());
+} 
+
+void NeopolitanAudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
+{
+   if (slider == &gainSlider)
+   {
+    audioProcessor.rawVlume = pow (10, gainSlider.getValue() / 20);
+   }
+
+}
+
+
+
+
+
 
 }
