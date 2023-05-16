@@ -13,7 +13,8 @@ namespace GUI
    // Use the golden ratio for the window proportions.
    constexpr auto GOLDEN_RATIO          = 1.618;
    constexpr auto DEFAULT_WINDOW_HEIGHT = 720;
-   const auto     DEFAULT_WINDOW_WIDTH  = static_cast<int>(std::ceil(DEFAULT_WINDOW_HEIGHT * GOLDEN_RATIO));
+   const auto     DEFAULT_WINDOW_WIDTH =
+      static_cast<int>(std::ceil(DEFAULT_WINDOW_HEIGHT * GOLDEN_RATIO));
 
    constexpr auto HEADER_HEIGHT = 36;
 }

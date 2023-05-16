@@ -25,7 +25,7 @@ public:
 private:
    std::array<FlavorKnob, Num_Flavors> _flavorKnobs;
 
-   juce::TextButton _header;
+   juce::TextButton                    _header;
 };
 
 }

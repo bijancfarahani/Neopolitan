@@ -15,17 +15,16 @@ namespace Neopolitan
 
 NeopolitanAudioProcessor::NeopolitanAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
-   : AudioProcessor(
-      BusesProperties()
+   : AudioProcessor(BusesProperties()
    #if !JucePlugin_IsMidiEffect
       #if !JucePlugin_IsSynth
-         .withInput("Input", juce::AudioChannelSet::stereo(), true)
+                       .withInput("Input", juce::AudioChannelSet::stereo(), true)
       #endif
-         .withOutput("Output", juce::AudioChannelSet::stereo(), true)
+                       .withOutput("Output", juce::AudioChannelSet::stereo(), true)
    #endif
-         ),
-     apvts(*this, nullptr, "Parameters", PluginParams::createParameterLayout()),
-     params()
+                       )
+   , apvts(*this, nullptr, "Parameters", PluginParams::createParameterLayout())
+   , params()
 #endif
 {
    for (auto i = 0; i < PluginParams::NumParams; ++i)
@@ -39,13 +38,9 @@ NeopolitanAudioProcessor::NeopolitanAudioProcessor()
 NeopolitanAudioProcessor::~NeopolitanAudioProcessor() {}
 
 //==============================================================================
-const juce::String
-   NeopolitanAudioProcessor::getName() const
-{
-   return JucePlugin_Name;
-}
+const juce::String NeopolitanAudioProcessor::getName() const { return JucePlugin_Name; }
 
-bool NeopolitanAudioProcessor::acceptsMidi() const
+bool               NeopolitanAudioProcessor::acceptsMidi() const
 {
 #if JucePlugin_WantsMidiInput
    return true;
@@ -72,42 +67,25 @@ bool NeopolitanAudioProcessor::isMidiEffect() const
 #endif
 }
 
-double
-   NeopolitanAudioProcessor::getTailLengthSeconds() const
-{
-   return 0.0;
-}
+double NeopolitanAudioProcessor::getTailLengthSeconds() const { return 0.0; }
 
-int NeopolitanAudioProcessor::getNumPrograms()
+int    NeopolitanAudioProcessor::getNumPrograms()
 {
    return 1; // NB: some hosts don't cope very well if you tell them there are
-      // 0 programs, so this should be at least 1, even if you're not
-      // really implementing programs.
+             // 0 programs, so this should be at least 1, even if you're not
+             // really implementing programs.
 }
 
-int NeopolitanAudioProcessor::getCurrentProgram()
-{
-   return 0;
-}
+int                NeopolitanAudioProcessor::getCurrentProgram() { return 0; }
 
-void NeopolitanAudioProcessor::setCurrentProgram(int index)
-{
-}
+void               NeopolitanAudioProcessor::setCurrentProgram(int index) {}
 
-const juce::String
-   NeopolitanAudioProcessor::getProgramName(int index)
-{
-   return {};
-}
+const juce::String NeopolitanAudioProcessor::getProgramName(int index) { return {}; }
 
-void NeopolitanAudioProcessor::changeProgramName(int                 index,
-                                                 const juce::String& newName)
-{
-}
+void NeopolitanAudioProcessor::changeProgramName(int index, const juce::String& newName) {}
 
 //==============================================================================
-void NeopolitanAudioProcessor::prepareToPlay(double sampleRate,
-                                             int    samplesPerBlock)
+void NeopolitanAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
    // Use this method as the place to do any pre-playback
    // initialisation that you need..
@@ -120,8 +98,7 @@ void NeopolitanAudioProcessor::releaseResources()
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool NeopolitanAudioProcessor::isBusesLayoutSupported(
-   const BusesLayout& layouts) const
+bool NeopolitanAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
 {
    #if JucePlugin_IsMidiEffect
    juce::ignoreUnused(layouts);
@@ -131,9 +108,9 @@ bool NeopolitanAudioProcessor::isBusesLayoutSupported(
    // In this template code we only support mono or stereo.
    // Some plugin hosts, such as certain GarageBand versions, will only
    // load plugins that support stereo bus layouts.
-   if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
-       && layouts.getMainOutputChannelSet()
-             != juce::AudioChannelSet::stereo())
+   if (
+      layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
+      && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
       return false;
 
          // This checks if the input layout matches the output layout
@@ -147,8 +124,8 @@ bool NeopolitanAudioProcessor::isBusesLayoutSupported(
 }
 #endif
 
-void NeopolitanAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
-                                            juce::MidiBuffer&         midiMessages)
+void NeopolitanAudioProcessor::processBlock(
+   juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
    juce::ScopedNoDenormals noDenormals;
    auto                    totalNumInputChannels  = getTotalNumInputChannels();
@@ -173,8 +150,8 @@ void NeopolitanAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
       // Apply gain.
       const auto gainWetPID = static_cast<int>(pID);
       const auto gainDbNorm = params[gainWetPID]->getValue();
-      const auto gainDb     = params[gainWetPID]->getNormalisableRange().convertFrom0to1(gainDbNorm);
-      const auto gain       = juce::Decibels::decibelsToGain(gainDb);
+      const auto gainDb = params[gainWetPID]->getNormalisableRange().convertFrom0to1(gainDbNorm);
+      const auto gain   = juce::Decibels::decibelsToGain(gainDb);
       return gain;
    };
 
@@ -187,8 +164,8 @@ void NeopolitanAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
       {
          auto whiteNoiseSample = _random.nextFloat() * 0.25f - 0.125f;
          // apply flavor gain
-         whiteNoiseSample *= applyGain(PluginParams::PID::Vanilla_Mix);
-         channelData[sample] = whiteNoiseSample;
+         whiteNoiseSample    *= applyGain(PluginParams::PID::Vanilla_Mix);
+         channelData[sample]  = whiteNoiseSample;
 
          // apply output gain
          applyGain(PluginParams::PID::GainWet);
@@ -202,8 +179,7 @@ bool NeopolitanAudioProcessor::hasEditor() const
    return true; // (change this to false if you choose to not supply an editor)
 }
 
-juce::AudioProcessorEditor*
-   NeopolitanAudioProcessor::createEditor()
+juce::AudioProcessorEditor* NeopolitanAudioProcessor::createEditor()
 {
    return new NeopolitanAudioProcessorEditor(*this);
 }
@@ -216,8 +192,7 @@ void NeopolitanAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
    // as intermediaries to make it easy to save and load complex data.
 }
 
-void NeopolitanAudioProcessor::setStateInformation(const void* data,
-                                                   int         sizeInBytes)
+void NeopolitanAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
 {
    // You should use this method to restore your parameters from this memory
    // block, whose contents will have been created by the getStateInformation()
@@ -227,8 +202,7 @@ void NeopolitanAudioProcessor::setStateInformation(const void* data,
 
 //==============================================================================
 // This creates new instances of the plugin..
-juce::AudioProcessor* JUCE_CALLTYPE
-   createPluginFilter()
+juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
    return new Neopolitan::NeopolitanAudioProcessor();
 }

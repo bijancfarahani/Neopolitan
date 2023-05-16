@@ -12,14 +12,13 @@ namespace PluginParams
 {
    constexpr int NEOPOLITAN_PLUGIN_PARAMETER_VERSION = 1;
 
-   using APVTS            = juce::AudioProcessorValueTreeState;
-   using RangedAudioParam = juce::RangedAudioParameter;
-   using UniqueRAP        = std::unique_ptr<RangedAudioParam>;
-   using UniqueRAPVector  = std::vector<UniqueRAP>;
-   using APP              = juce::AudioProcessorParameter;
-   using APF              = juce::AudioParameterFloat;
-   using RangeF           = juce::NormalisableRange<float>;
-
+   using APVTS                                       = juce::AudioProcessorValueTreeState;
+   using RangedAudioParam                            = juce::RangedAudioParameter;
+   using UniqueRAP                                   = std::unique_ptr<RangedAudioParam>;
+   using UniqueRAPVector                             = std::vector<UniqueRAP>;
+   using APP                                         = juce::AudioProcessorParameter;
+   using APF                                         = juce::AudioParameterFloat;
+   using RangeF                                      = juce::NormalisableRange<float>;
 
    enum class PID
    {
@@ -44,16 +43,12 @@ namespace PluginParams
       return ret;
    }
 
-
    inline juce::String toID(const juce::String& name)
    {
       return name.toLowerCase().removeCharacters(" ");
    }
 
-   inline juce::String toID(PID pID)
-   {
-      return toID(toName(pID));
-   }
+   inline juce::String toID(PID pID) { return toID(toName(pID)); }
 
    inline juce::String toString(Unit unit)
    {
@@ -81,19 +76,24 @@ namespace PluginParams
          const auto r  = end - start;
          const auto aR = r * a;
          if (bias != 0.f)
-            return {
-               start, end, [a2, aM, aR](ValueType min, ValueType, ValueType x) {
-						const auto denom = aM - x + a2 * x;
-						if (denom == 0.f)
-							return min;
-						return min + aR * x / denom; }, [a2, aM, aR](ValueType min, ValueType, ValueType x) {
-						const auto denom = a2 * min + aR - a2 * x - min + x;
-						if (denom == 0.f)
-							return 0.f;
-						auto val = aM * (x - min) / denom;
-						return val > 1.f ? 1.f : val; }, [](ValueType min, ValueType max, ValueType x) { return x < min ? min : x > max ? max
-                                                                                                                                                                                                                            : x; }
-            };
+            return { start,
+                     end,
+                     [a2, aM, aR](ValueType min, ValueType, ValueType x) {
+                        const auto denom = aM - x + a2 * x;
+                        if (denom == 0.f)
+                           return min;
+                        return min + aR * x / denom;
+                     },
+                     [a2, aM, aR](ValueType min, ValueType, ValueType x) {
+                        const auto denom = a2 * min + aR - a2 * x - min + x;
+                        if (denom == 0.f)
+                           return 0.f;
+                        auto val = aM * (x - min) / denom;
+                        return val > 1.f ? 1.f : val;
+                     },
+                     [](ValueType min, ValueType max, ValueType x) {
+                        return x < min ? min : x > max ? max : x;
+                     } };
          else
             return { start, end };
       }
@@ -108,19 +108,24 @@ namespace PluginParams
          const auto r  = end - start;
          const auto aR = r * a;
          if (bias != 0.f)
-            return {
-               start, end, [a2, aM, aR](float min, float, float x) {
-						const auto denom = aM - x + a2 * x;
-						if (denom == 0.f)
-							return min;
-						return min + aR * x / denom; }, [a2, aM, aR](float min, float, float x) {
-						const auto denom = a2 * min + aR - a2 * x - min + x;
-						if (denom == 0.f)
-							return 0.f;
-						auto val = aM * (x - min) / denom;
-						return val > 1.f ? 1.f : val; }, [](float min, float max, float x) { return x < min ? min : x > max ? max
-                                                                                                                                                                                        : x; }
-            };
+            return { start,
+                     end,
+                     [a2, aM, aR](float min, float, float x) {
+                        const auto denom = aM - x + a2 * x;
+                        if (denom == 0.f)
+                           return min;
+                        return min + aR * x / denom;
+                     },
+                     [a2, aM, aR](float min, float, float x) {
+                        const auto denom = a2 * min + aR - a2 * x - min + x;
+                        if (denom == 0.f)
+                           return 0.f;
+                        auto val = aM * (x - min) / denom;
+                        return val > 1.f ? 1.f : val;
+                     },
+                     [](float min, float max, float x) {
+                        return x < min ? min : x > max ? max : x;
+                     } };
          else
             return { start, end };
       }
@@ -130,28 +135,19 @@ namespace PluginParams
          return { start, end, steps };
       }
 
-      inline RangeF toggle() noexcept
-      {
-         return stepped(0.f, 1.f);
-      }
+      inline RangeF toggle() noexcept { return stepped(0.f, 1.f); }
 
       inline RangeF linear(float start, float end) noexcept
       {
          const auto range = end - start;
 
-         return {
-            start,
-            end,
-            [range](float min, float, float normalized) {
-               return min + normalized * range;
-            },
-            [inv = 1.f / range](float min, float, float denormalized) {
-               return (denormalized - min) * inv;
-            },
-            [](float min, float max, float x) {
-               return juce::jlimit(min, max, x);
-            }
-         };
+         return { start,
+                  end,
+                  [range](float min, float, float normalized) { return min + normalized * range; },
+                  [inv = 1.f / range](float min, float, float denormalized) {
+                     return (denormalized - min) * inv;
+                  },
+                  [](float min, float max, float x) { return juce::jlimit(min, max, x); } };
       }
 
       inline RangeF withCentre(float start, float end, float centre) noexcept
@@ -170,9 +166,7 @@ namespace PluginParams
    {
       inline ValToStr db()
       {
-         return [](float val, int) {
-            return juce::String(val, 2) + " dB";
-         };
+         return [](float val, int) { return juce::String(val, 2) + " dB"; };
       }
 
       inline ValToStr hz()
@@ -215,10 +209,11 @@ namespace PluginParams
       }
    }
 
-   inline void createParam(UniqueRAPVector& vec, PID pID, const RangeF& range, float defaultVal, const Unit unit)
+   inline void createParam(
+      UniqueRAPVector& vec, PID pID, const RangeF& range, float defaultVal, const Unit unit)
    {
-      ValToStr valToStrFunc;
-      StrToVal strToValFunc;
+      ValToStr   valToStrFunc;
+      StrToVal   strToValFunc;
 
       const auto name = toName(pID);
       const auto id   = toID(name);
@@ -236,7 +231,7 @@ namespace PluginParams
       }
 
       vec.emplace_back(std::make_unique<APF>(
-         juce::ParameterID{id, NEOPOLITAN_PLUGIN_PARAMETER_VERSION},
+         juce::ParameterID { id, NEOPOLITAN_PLUGIN_PARAMETER_VERSION },
          name,
          range,
          defaultVal,
@@ -245,9 +240,6 @@ namespace PluginParams
          valToStrFunc,
          strToValFunc));
    }
-
-
-
 
    // Factory of sorts for all the 'knobs and switches' and whatever
    // other types of controls we expose for interaction (both with
@@ -262,7 +254,8 @@ namespace PluginParams
       createParam(params, PID::Chocolate_Mix, range::linear(-12.f, 12.f), 0.f, Unit::Db);
       createParam(params, PID::Strawberry_Mix, range::linear(-12.f, 12.f), 0.f, Unit::Db);
 
-      createParam(params, PID::Frequency, range::withCentre(20.f, 20000.f, 1000.f), 1000.f, Unit::Hz);
+      createParam(
+         params, PID::Frequency, range::withCentre(20.f, 20000.f, 1000.f), 1000.f, Unit::Hz);
 
       return { params.begin(), params.end() };
    }

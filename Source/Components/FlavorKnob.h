@@ -13,8 +13,12 @@ struct AttachedSlider
    using Attachment = juce::SliderParameterAttachment;
    using Component  = juce::Component;
 
-   AttachedSlider(NeopolitanAudioProcessor& processor, NeopolitanLookAndFeel& lookAndFeel, PluginParams::PID pID) : slider(),
-                                                                                                                    attachment(*processor.Params()[static_cast<int>(pID)], slider, nullptr)
+   AttachedSlider(
+      NeopolitanAudioProcessor& processor,
+      NeopolitanLookAndFeel&    lookAndFeel,
+      PluginParams::PID         pID)
+      : slider()
+      , attachment(*processor.Params()[static_cast<int>(pID)], slider, nullptr)
    {
       slider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
       slider.setLookAndFeel(&lookAndFeel);
@@ -26,16 +30,18 @@ struct AttachedSlider
 class FlavorKnob : public juce::Component
 {
 public:
-   FlavorKnob(NeopolitanAudioProcessor& processor, PluginParams::PID pID, NeopolitanLookAndFeel& lookAndFeel);
-
-   void initialize(FlavorCode flavorCode);
+   FlavorKnob(
+      NeopolitanAudioProcessor& processor,
+      PluginParams::PID         pID,
+      Flavor                    flavor,
+      NeopolitanLookAndFeel&    lookAndFeel);
 
    void           paint(juce::Graphics&) override;
    void           resized() override;
    AttachedSlider _gainDial;
 
 private:
-   FlavorCode  _flavorCode;
+   Flavor      _flavor;
    juce::Label _nameLabel;
    juce::Image _iceCreamImage;
    juce::Image _sprinkleImage;

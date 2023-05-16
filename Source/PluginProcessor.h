@@ -47,10 +47,10 @@ public:
    //==============================================================================
    const juce::String getName() const override;
 
-   bool   acceptsMidi() const override;
-   bool   producesMidi() const override;
-   bool   isMidiEffect() const override;
-   double getTailLengthSeconds() const override;
+   bool               acceptsMidi() const override;
+   bool               producesMidi() const override;
+   bool               isMidiEffect() const override;
+   double             getTailLengthSeconds() const override;
 
    //==============================================================================
    int                getNumPrograms() override;
@@ -60,8 +60,8 @@ public:
    void               changeProgramName(int index, const juce::String& newName) override;
 
    //==============================================================================
-   void getStateInformation(juce::MemoryBlock& destData) override;
-   void setStateInformation(const void* data, int sizeInBytes) override;
+   void        getStateInformation(juce::MemoryBlock& destData) override;
+   void        setStateInformation(const void* data, int sizeInBytes) override;
 
    RAPPtrArray Params() { return params; }
 

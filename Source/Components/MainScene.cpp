@@ -6,10 +6,10 @@ namespace Neopolitan
 {
 MainScene::MainScene(NeopolitanAudioProcessor& pluginProcessor, NeopolitanLookAndFeel& lookAndFeel)
    : _flavorKnobs {
-        FlavorKnob(pluginProcessor, PluginParams::PID::Vanilla_Mix, lookAndFeel),
-        FlavorKnob(pluginProcessor, PluginParams::PID::Strawberry_Mix, lookAndFeel),
-        FlavorKnob(pluginProcessor, PluginParams::PID::Chocolate_Mix, lookAndFeel)
-     }
+      FlavorKnob(pluginProcessor, PluginParams::PID::Vanilla_Mix, Vanilla, lookAndFeel),
+      FlavorKnob(pluginProcessor, PluginParams::PID::Strawberry_Mix, Strawberry, lookAndFeel),
+      FlavorKnob(pluginProcessor, PluginParams::PID::Chocolate_Mix, Chocolate, lookAndFeel)
+   }
 {
    _header.setColour(juce::TextButton::buttonColourId, juce::Colours::orange);
    _header.setButtonText("Neopolitan Plugin");
@@ -18,9 +18,6 @@ MainScene::MainScene(NeopolitanAudioProcessor& pluginProcessor, NeopolitanLookAn
    {
       addAndMakeVisible(knob);
    }
-   _flavorKnobs[Vanilla].initialize(Vanilla);
-   _flavorKnobs[Strawberry].initialize(Strawberry);
-   _flavorKnobs[Chocolate].initialize(Chocolate);
 }
 
 //==============================================================================
@@ -28,7 +25,8 @@ void MainScene::paint(juce::Graphics& g)
 {
    // (Our component is opaque, so we must completely fill the background with
    // a solid colour).
-   g.fillAll(juce::Colour(GUI::BACKGROUND_COLOUR_RED, GUI::BACKGROUND_COLOUR_GREEN, GUI::BACKGROUND_COLOUR_BLUE));
+   g.fillAll(juce::Colour(
+      GUI::BACKGROUND_COLOUR_RED, GUI::BACKGROUND_COLOUR_GREEN, GUI::BACKGROUND_COLOUR_BLUE));
 }
 
 void MainScene::resized()
