@@ -4,7 +4,7 @@ namespace Neopolitan
 {
 
 constexpr unsigned Num_Flavors = 3;
-enum FlavorCode : unsigned
+enum Flavor : unsigned
 {
    Vanilla,
    Strawberry,

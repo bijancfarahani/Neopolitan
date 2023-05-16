@@ -1,11 +1,20 @@
 AccessModifierOffset: -3
-AlignAfterOpenBracket: Align
-AlignConsecutiveAssignments: true
-AlignConsecutiveDeclarations: true
+AlignArrayOfStructures: None
+AlignAfterOpenBracket: AlwaysBreak
+AlignConsecutiveAssignments:
+  Enabled: true
+  AcrossEmptyLines: true
+  AcrossComments: false
+  AlignCompound: true
+  PadOperators: true
+AlignConsecutiveDeclarations: AcrossEmptyLines
+
 AlignEscapedNewlines: Left
-AlignOperands: Align
-AlignTrailingComments: false
-AllowAllParametersOfDeclarationOnNextLine: false
+AlignOperands: AlignAfterOperator
+AlignTrailingComments: true
+AllowAllArgumentsOnNextLine: true
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowAllConstructorInitializersOnNextLine: false
 AllowShortBlocksOnASingleLine: Never
 AllowShortCaseLabelsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: All
@@ -29,19 +38,31 @@ BraceWrapping: # Allman except for lambdas
   AfterNamespace: true
   AfterStruct: true
   BeforeElse: true
+  BeforeElse: true
+  BeforeWhile: false
+  IndentBraces: false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
   AfterControlStatement: Always
   BeforeLambdaBody: false
 BreakBeforeTernaryOperators: true
-BreakConstructorInitializersBeforeComma: false
-BreakStringLiterals: false
-ColumnLimit: 0
+BreakConstructorInitializers: BeforeComma
+BreakInheritanceList: BeforeComma
+BreakStringLiterals: true
+CompactNamespaces: false
+ColumnLimit: 100
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
-ConstructorInitializerIndentWidth: 3
-ContinuationIndentWidth: 3
-Cpp11BracedListStyle: false
+ConstructorInitializerIndentWidth: 0
+ContinuationIndentWidth: 6
+Cpp11BracedListStyle: true
 DerivePointerAlignment: false
 DisableFormat: false
+
+EmptyLineAfterAccessModifier: Never
+
 ExperimentalAutoDetectBinPacking: false
+
 IndentCaseLabels: false
 IndentPPDirectives: BeforeHash
 IndentWidth: 3

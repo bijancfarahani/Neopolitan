@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "PluginParameters.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -22,6 +23,9 @@ class NeopolitanAudioProcessor : public juce::AudioProcessor
 #endif
 {
 public:
+   using RAPPtr      = juce::RangedAudioParameter*;
+   using RAPPtrArray = std::array<RAPPtr, PluginParams::NumParams>;
+
    //==============================================================================
    NeopolitanAudioProcessor();
    ~NeopolitanAudioProcessor() override;
@@ -43,10 +47,10 @@ public:
    //==============================================================================
    const juce::String getName() const override;
 
-   bool   acceptsMidi() const override;
-   bool   producesMidi() const override;
-   bool   isMidiEffect() const override;
-   double getTailLengthSeconds() const override;
+   bool               acceptsMidi() const override;
+   bool               producesMidi() const override;
+   bool               isMidiEffect() const override;
+   double             getTailLengthSeconds() const override;
 
    //==============================================================================
    int                getNumPrograms() override;
@@ -56,11 +60,18 @@ public:
    void               changeProgramName(int index, const juce::String& newName) override;
 
    //==============================================================================
-   void getStateInformation(juce::MemoryBlock& destData) override;
-   void setStateInformation(const void* data, int sizeInBytes) override;
+   void        getStateInformation(juce::MemoryBlock& destData) override;
+   void        setStateInformation(const void* data, int sizeInBytes) override;
+
+   RAPPtrArray Params() { return params; }
 
 private:
    //==============================================================================
+
+   juce::AudioProcessorValueTreeState apvts;
+   RAPPtrArray                        params;
+   juce::Random                       _random;
+
    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NeopolitanAudioProcessor)
 };
 

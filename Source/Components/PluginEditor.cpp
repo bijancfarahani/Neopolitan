@@ -13,13 +13,12 @@
 namespace Neopolitan
 {
 
-NeopolitanAudioProcessorEditor::NeopolitanAudioProcessorEditor(
-   NeopolitanAudioProcessor& p)
-   : AudioProcessorEditor(&p), audioProcessor(p), _mainScene()
+NeopolitanAudioProcessorEditor::NeopolitanAudioProcessorEditor(NeopolitanAudioProcessor& p)
+   : AudioProcessorEditor(&p)
+   , audioProcessor(p)
+   , _mainScene(p, _lookAndFeel)
 {
-   // Make sure that before the constructor has finished, you've set the
-   // editor's size to whatever you need it to be.
-   setSize(1024, 720);
+   setSize(GUI::DEFAULT_WINDOW_WIDTH, GUI::DEFAULT_WINDOW_HEIGHT);
 
    _mainScene.setSize(getWidth(), getHeight());
    addAndMakeVisible(_mainScene);

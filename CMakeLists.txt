@@ -1,17 +1,63 @@
-### JUCE CMake Audio Plugin Template ###
+#####################################
+# Define Project-Wide Settings
+#####################################
 
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 
-project(Neopolitan 
-   VERSION 0.0.1
+# Enables the Visibility Property on all target types
+cmake_policy(SET CMP0063 NEW)
+# Enables the MSVC_RUNTIME_LIBRARY property on targets
+cmake_policy(SET CMP0091 NEW)
+
+# Set Project details.
+project(Neopolitan
+   VERSION 1.0.0
    LANGUAGES CXX
    DESCRIPTION "A tasty plugin"
 )
 
+# Set Project version (used for library versioning and for CPack)
+set(CMAKE_PROJECT_VERSION_MAJOR 1)
+set(CMAKE_PROJECT_VERSION_MINOR 0)
+set(CMAKE_PROJECT_VERSION_PATCH 0)
+set(CMAKE_PROJECT_VERSION ${CMAKE_PROJECT_VERSION_MAJOR}.${CMAKE_PROJECT_VERSION_MINOR}.${CMAKE_PROJECT_VERSION_PATCH})
 
-### Dependency versions ###
-set(LIB_JUCE_TAG "7.0.5")
 
+# ---- Include guards ----
+if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
+  message(
+    FATAL_ERROR
+      "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there."
+  )
+endif()
+
+# Add depdencies via CPM.
+include(cmake/CPM.cmake)
+
+
+
+# being a cross-platform target, we enforce standards conformance on MSVC
+#target_compile_options(${PROJECT_NAME} PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->")
+
+
+#####################################
+# Define Options
+#####################################
+option(BUILD_TESTING "Build tests" FALSE)
+option(BUILD_SHARED_LIBS "Build shared libraries" FALSE)
+option(BUILD_WITH_MT "Build libraries as MultiThreaded DLL (Windows Only)" FALSE)
+
+#####################################
+# Define CMake Module Imports
+#####################################
+include(GNUInstallDirs)
+include(CMakePackageConfigHelpers)
+include(InstallRequiredSystemLibraries)
+include(GenerateExportHeader)
+include(${CMAKE_SOURCE_DIR}/cmake/clang_format.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/compiler_options.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/cpack.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/cppcheck.cmake)
 
 ### IDE Generator pre-config ###
 
@@ -28,6 +74,15 @@ option(JUCE_ENABLE_MODULE_SOURCE_GROUPS "Show all module sources in IDE projects
 
 ### Dependency management ###
 
+
+# We use Magic Enum to handle tedious Plugin Parameter boilerplate.
+CPMAddPackage(
+    NAME magic_enum
+    GITHUB_REPOSITORY Neargye/magic_enum
+    GIT_TAG v0.8.2
+)
+
+
 include(FetchContent)
 
 # Keep dependencies outside of the "Build" directory.
@@ -35,6 +90,7 @@ include(FetchContent)
 # rebuilding the dependencies.
 set(FETCHCONTENT_BASE_DIR "${PROJECT_SOURCE_DIR}/Libs" CACHE PATH "External dependencies path." FORCE)
 
+set(LIB_JUCE_TAG "7.0.5")
 FetchContent_Declare(juce
     GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
     GIT_TAG        ${LIB_JUCE_TAG}
@@ -132,21 +188,21 @@ target_compile_definitions("${PROJECT_NAME}"
 # If your target needs extra binary assets, you can add them here.
 # NOTE: Conversion to binary-data happens when the target is built.
 
-juce_add_binary_data(Assets       # Name of a static library target that will include all the binary resources
-    # HEADER_NAME ...               # Name of the generated header. "BinaryData.h" is used by default
-    # NAMESPACE ...                 # Namespace of the generated binary data class. "BinaryData" is used by default
-   SOURCES
-        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_cone.png
-        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_circle1.png
-        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_circle2.png
-        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_circle3.png
-        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle1.png
-        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle2.png
-        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle3.png
-        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle4.png
-        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle5.png
-        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle6.png
-)                    # List of asset files of any kind that should be built into the static library
+#juce_add_binary_data(Assets       # Name of a static library target that will include all the binary resources
+#    # HEADER_NAME ...               # Name of the generated header. "BinaryData.h" is used by default
+#    # NAMESPACE ...                 # Namespace of the generated binary data class. "BinaryData" is used by default
+#   SOURCES
+#        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_cone.png
+#        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_circle1.png
+#        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_circle2.png
+#        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_circle3.png
+#        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle1.png
+#        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle2.png
+#        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle3.png
+#        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle4.png
+#        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle5.png
+#        ${CMAKE_SOURCE_DIR}/ScrapAssets/icecream_sprinkle6.png
+#)                    # List of asset files of any kind that should be built into the static library
 
 # `target_link_libraries` links libraries and JUCE modules to other libraries or executables. Here,
 # we're linking our executable target to the `juce::juce_audio_utils` module. Inter-module
@@ -154,8 +210,9 @@ juce_add_binary_data(Assets       # Name of a static library target that will in
 
 target_link_libraries("${PROJECT_NAME}"
     PRIVATE
-        Assets                # If we'd created a binary data target, we'd link to it here
+        #Assets                # If we'd created a binary data target, we'd link to it here
         juce::juce_audio_utils
+        magic_enum::magic_enum
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags

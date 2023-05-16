@@ -15,6 +15,7 @@
 #include "FlavorKnob.h"
 #include "MainScene.h"
 #include "NeopolitanConstants.h"
+#include "NeopolitanLookAndFeel.h"
 //==============================================================================
 /**
  */
@@ -35,7 +36,10 @@ private:
    // This reference is provided as a quick way for your editor to
    // access the processor object that created it.
    NeopolitanAudioProcessor& audioProcessor;
-   MainScene                 _mainScene;
+
+   NeopolitanLookAndFeel _lookAndFeel;
+
+   MainScene _mainScene;
 
    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(
       NeopolitanAudioProcessorEditor)
