@@ -212,6 +212,7 @@ target_link_libraries("${PROJECT_NAME}"
     PRIVATE
         #Assets                # If we'd created a binary data target, we'd link to it here
         juce::juce_audio_utils
+        juce::juce_dsp
         magic_enum::magic_enum
     PUBLIC
         juce::juce_recommended_config_flags

@@ -38,9 +38,7 @@ namespace PluginParams
 
    inline juce::String toName(PID pID)
    {
-      auto ret = juce::String(magic_enum::enum_name(pID).data());
-      std::cout << "ret: " << ret << std::endl;
-      return ret;
+      return juce::String(magic_enum::enum_name(pID).data());
    }
 
    inline juce::String toID(const juce::String& name)

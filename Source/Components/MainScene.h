@@ -1,6 +1,7 @@
 #pragma once
 
 #include "FlavorKnob.h"
+#include "SpectrumAnalyser.h"
 #include "NeopolitanConstants.h"
 #include "NeopolitanGUIConstants.h"
 #include "NeopolitanLookAndFeel.h"
@@ -26,6 +27,8 @@ private:
    std::array<FlavorKnob, Num_Flavors> _flavorKnobs;
 
    juce::TextButton                    _header;
+
+   SpectrumAnalyser _spectrumAnalyser;
 };
 
 }
