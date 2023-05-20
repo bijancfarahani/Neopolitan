@@ -9,6 +9,7 @@
 #pragma once
 
 #include "PluginParameters.h"
+#include "Spec.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -16,10 +17,10 @@
  */
 namespace Neopolitan
 {
-class NeopolitanAudioProcessor : public juce::AudioProcessor
+class NeopolitanAudioProcessor
+: public juce::AudioProcessor
 #if JucePlugin_Enable_ARA
-   ,
-                                 public juce::AudioProcessorARAExtension
+, public juce::AudioProcessorARAExtension
 #endif
 {
 public:
@@ -65,12 +66,15 @@ public:
 
    RAPPtrArray Params() { return params; }
 
+   Spec&       getSpectrumAnalyzer() { return _spec; }
+
 private:
    //==============================================================================
 
    juce::AudioProcessorValueTreeState apvts;
    RAPPtrArray                        params;
    juce::Random                       _random;
+   Spec                               _spec;
 
    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NeopolitanAudioProcessor)
 };

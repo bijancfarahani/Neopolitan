@@ -15,7 +15,7 @@ namespace Neopolitan
 
 NeopolitanAudioProcessor::NeopolitanAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
-   : AudioProcessor(BusesProperties()
+: AudioProcessor(BusesProperties()
    #if !JucePlugin_IsMidiEffect
       #if !JucePlugin_IsSynth
                        .withInput("Input", juce::AudioChannelSet::stereo(), true)
@@ -23,8 +23,9 @@ NeopolitanAudioProcessor::NeopolitanAudioProcessor()
                        .withOutput("Output", juce::AudioChannelSet::stereo(), true)
    #endif
                        )
-   , apvts(*this, nullptr, "Parameters", PluginParams::createParameterLayout())
-   , params()
+, apvts(*this, nullptr, "Parameters", PluginParams::createParameterLayout())
+, params()
+, _spec()
 #endif
 {
    for (auto i = 0; i < PluginParams::NumParams; ++i)
@@ -108,9 +109,8 @@ bool NeopolitanAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts
    // In this template code we only support mono or stereo.
    // Some plugin hosts, such as certain GarageBand versions, will only
    // load plugins that support stereo bus layouts.
-   if (
-      layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
-      && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
+   if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
+       && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
       return false;
 
          // This checks if the input layout matches the output layout
@@ -125,7 +125,7 @@ bool NeopolitanAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts
 #endif
 
 void NeopolitanAudioProcessor::processBlock(
-   juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+      juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
    juce::ScopedNoDenormals noDenormals;
    auto                    totalNumInputChannels  = getTotalNumInputChannels();
@@ -169,6 +169,8 @@ void NeopolitanAudioProcessor::processBlock(
 
          // apply output gain
          applyGain(PluginParams::PID::GainWet);
+
+         _spec.pushNextSampleIntoFifo(channelData[sample]);
       }
    }
 }

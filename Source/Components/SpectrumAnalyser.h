@@ -1,13 +1,18 @@
 #pragma once
 
+#include "Spec.h"
 #include <JuceHeader.h>
 
 namespace Neopolitan
 {
-class SpectrumAnalyser : public juce::Component
+class Spec;
+
+class SpectrumAnalyser
+: public juce::Component
+, juce::Timer
 {
 public:
-   SpectrumAnalyser() : forwardFft(fftOrder) { setOpaque(true); }
+   SpectrumAnalyser(Spec& spec) : _spec(spec) {}
    ~SpectrumAnalyser() = default;
 
    void paint(juce::Graphics& g) override
@@ -19,37 +24,67 @@ public:
       drawFrame(g);
    }
 
+   void timerCallback() override
+   {
+      if (_spec.getNextFFTBlockReady())
+      {
+         drawNextFrameOfSpectrum();
+         _spec.getNextFFTBlockReady() = false;
+         repaint();
+      }
+   }
+
    void drawFrame(juce::Graphics& g)
    {
-      for (int i = 1; i < scopeSize; ++i)
+      for (int i = 1; i < _spec.getScopeSize(); ++i)
       {
          auto width  = getLocalBounds().getWidth();
          auto height = getLocalBounds().getHeight();
-
+         std::cout << "scopeData: " << _spec.getScopeData()[i - 1] << std::endl;
          g.drawLine(
-               {(float) juce::jmap(i - 1, 0, scopeSize - 1, 0, width),
-                juce::jmap(scopeData[i - 1], 0.0f, 1.0f, (float) height, 0.0f),
-                (float) juce::jmap(i, 0, scopeSize - 1, 0, width),
-                juce::jmap(scopeData[i], 0.0f, 1.0f, (float) height, 0.0f)});
+               {(float) juce::jmap(i - 1, 0, _spec.getScopeSize() - 1, 0, width),
+                juce::jmap(_spec.getScopeData()[i - 1], 0.0f, 1.0f, (float) height, 0.0f),
+                (float) juce::jmap(i, 0, _spec.getScopeSize() - 1, 0, width),
+                juce::jmap(_spec.getScopeData()[i], 0.0f, 1.0f, (float) height, 0.0f)});
       }
    }
-   void resized() override {}
-   enum
+
+   void drawNextFrameOfSpectrum()
    {
-      fftOrder  = 11,            // [1]
-      fftSize   = 1 << fftOrder, // [2]
-      scopeSize = 512            // [3]
-   };
+      // first apply a windowing function to our data
+      _spec.getWindow().multiplyWithWindowingTable(_spec.getFftData(), _spec.fftSize); // [1]
+
+      // then render our FFT data..
+      _spec.getForwardFFT().performFrequencyOnlyForwardTransform(_spec.getFftData()); // [2]
+
+      auto mindB = -100.0f;
+      auto maxdB = 0.0f;
+
+      for (int i = 0; i < _spec.getScopeSize(); ++i) // [3]
+      {
+         auto skewedProportionX =
+               1.0f - std::exp(std::log(1.0f - (float) i / (float) _spec.getScopeSize()) * 0.2f);
+         auto fftDataIndex = juce::jlimit(
+               0, _spec.fftSize / 2, (int) (skewedProportionX * (float) _spec.fftSize * 0.5f));
+         auto level = juce::jmap(
+               juce::jlimit(
+                     mindB,
+                     maxdB,
+                     juce::Decibels::gainToDecibels(_spec.getFftData()[fftDataIndex])
+                           - juce::Decibels::gainToDecibels((float) _spec.fftSize)),
+               mindB,
+               maxdB,
+               0.0f,
+               1.0f);
+
+         _spec.getScopeData()[i] = level; // [4]
+      }
+   }
+
+   void resized() override {}
 
 private:
-   juce::dsp::FFT                      forwardFFT;                // [4]
-   juce::dsp::WindowingFunction<float> window;                    // [5]
-
-   float                               fifo[fftSize];             // [6]
-   float                               fftData[2 * fftSize];      // [7]
-   int                                 fifoIndex         = 0;     // [8]
-   bool                                nextFFTBlockReady = false; // [9]
-   float                               scopeData[scopeSize];
+   Spec& _spec;
 };
 
 }

@@ -14,7 +14,9 @@ target_sources("${PROJECT_NAME}"
     PRIVATE
         PluginParameters.h
         PluginProcessor.h
-        PluginProcessor.cpp)
+        PluginProcessor.cpp
+        Spec.h
+        Spec.cpp)
 
 # Add subdirectories with source files, if present
 add_subdirectory(Components)

@@ -5,10 +5,8 @@
 namespace Neopolitan
 {
 MainScene::MainScene(NeopolitanAudioProcessor& pluginProcessor, NeopolitanLookAndFeel& lookAndFeel)
-: _flavorKnobs {
-      FlavorKnob(pluginProcessor, PluginParams::PID::Vanilla_Mix, Vanilla, lookAndFeel),
-      FlavorKnob(pluginProcessor, PluginParams::PID::Strawberry_Mix, Strawberry, lookAndFeel),
-      FlavorKnob(pluginProcessor, PluginParams::PID::Chocolate_Mix, Chocolate, lookAndFeel)}
+: _flavorKnobs {FlavorKnob(pluginProcessor, PluginParams::PID::Vanilla_Mix, Vanilla, lookAndFeel), FlavorKnob(pluginProcessor, PluginParams::PID::Strawberry_Mix, Strawberry, lookAndFeel), FlavorKnob(pluginProcessor, PluginParams::PID::Chocolate_Mix, Chocolate, lookAndFeel)}
+, _spectrumAnalyser(pluginProcessor.getSpectrumAnalyzer())
 {
    _header.setColour(juce::TextButton::buttonColourId, juce::Colours::orange);
    _header.setButtonText("Neopolitan Plugin");
@@ -50,7 +48,7 @@ void MainScene::resized()
       x += sliderWidth;
    }
 
-   _spectrumAnalyser.setBounds(area.removeFromBottom(200));
+   _spectrumAnalyser.setBounds(area.removeFromBottom(400));
 }
 
 }
