@@ -10,13 +10,10 @@ target_include_directories("${PROJECT_NAME}"
 
 target_sources("${PROJECT_NAME}"
     PRIVATE
-        FlavorKnob.h
-        FlavorKnob.cpp
-        MainScene.h
-        MainScene.cpp
-        PluginEditor.h
         PluginEditor.cpp
-        NeopolitanLookAndFeel.h
+        MainScene.cpp
+        FlavorKnob.cpp
+        FrequencySpectrumDisplay.cpp
 )
 
 # Add subdirectories with source files, if present

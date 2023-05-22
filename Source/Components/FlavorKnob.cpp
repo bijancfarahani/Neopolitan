@@ -4,28 +4,18 @@ namespace Neopolitan
 {
 
 FlavorKnob::FlavorKnob(
-   NeopolitanAudioProcessor& pluginProcessor,
-   PluginParams::PID         pID,
-   Flavor                    flavor,
-   NeopolitanLookAndFeel&    lookAndFeel)
-   : _gainDial(pluginProcessor, lookAndFeel, pID)
-   , _flavor(flavor)
+      juce::RangedAudioParameter& rangedAudioParameter, NeopolitanLookAndFeel& lookAndFeel)
+: _gainDial(rangedAudioParameter, lookAndFeel)
 {
-   //setSize(300, 300);
-   // _gainDial.slider.setSize(300, 300);
-
-   addAndMakeVisible(_nameLabel);
    addAndMakeVisible(_gainDial.slider);
-}
-
-void FlavorKnob::paint(juce::Graphics& g)
-{
-   // fill
 }
 
 void FlavorKnob::resized()
 {
-   _gainDial.slider.setBounds(juce::Rectangle<float>(0, 0, getWidth(), getHeight()).toNearestInt());
+   _gainDial.slider.setBounds(
+         juce::Rectangle<float>(
+               0, 0, static_cast<float>(getWidth()), static_cast<float>(getHeight()))
+               .toNearestInt());
 }
 
 }

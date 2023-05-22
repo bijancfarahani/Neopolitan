@@ -1,6 +1,7 @@
 #pragma once
 
 #include "FlavorKnob.h"
+#include "FrequencySpectrumDisplay.h"
 #include "NeopolitanConstants.h"
 #include "NeopolitanGUIConstants.h"
 #include "NeopolitanLookAndFeel.h"
@@ -17,15 +18,17 @@ namespace Neopolitan
 class MainScene : public juce::Component
 {
 public:
-   MainScene(NeopolitanAudioProcessor&, NeopolitanLookAndFeel&);
+   MainScene(NeopolitanAudioProcessor& pluginProcessor, NeopolitanLookAndFeel& lookAndFeel);
 
    void paint(juce::Graphics& g) override;
    void resized() override;
 
 private:
-   std::array<FlavorKnob, Num_Flavors> _flavorKnobs;
+   std::array<FlavorKnob, NUM_FLAVORS> _flavorKnobs;
 
    juce::TextButton                    _header;
+
+   FrequencySpectrumDisplay            _freqSpectrumDisplay;
 };
 
 }
