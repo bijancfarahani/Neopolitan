@@ -6,7 +6,8 @@ namespace Neopolitan
 FrequencySpectrumDisplay::FrequencySpectrumDisplay(FrequencySpectrumAnalyzer& _freqSpectrumAnalyzer)
 : _freqSpectrumAnalyzer(_freqSpectrumAnalyzer)
 {
-   startTimerHz(30);
+   constexpr auto FRAME_RATE = 30;
+   startTimerHz(FRAME_RATE);
 }
 
 void FrequencySpectrumDisplay::paint(juce::Graphics& g)

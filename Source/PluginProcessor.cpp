@@ -31,7 +31,7 @@ NeopolitanAudioProcessor::NeopolitanAudioProcessor()
    for (auto i = 0; i < PluginParameters::NumParams; ++i)
    {
       const auto pID       = static_cast<PluginParameters::PID>(i);
-      const auto id        = PluginParameters::toID(pID);
+      const auto id        = PluginParameters::getParameterID(pID);
       _pluginParameters[i] = apvts.getParameter(id);
    }
 }

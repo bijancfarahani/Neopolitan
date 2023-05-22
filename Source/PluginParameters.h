@@ -1,5 +1,6 @@
 #pragma once
 
+#include "NeopolitanUtilities.h"
 #include "magic_enum.hpp"
 #include <JuceHeader.h>
 
@@ -9,6 +10,7 @@ namespace PluginParameters
 {
    constexpr int NEOPOLITAN_PLUGIN_PARAMETER_VERSION = 1;
 
+   // Add all the controls for our plugin here.
    enum class PID
    {
       Vanilla_Mix,
@@ -23,95 +25,14 @@ namespace PluginParameters
       Hz
    };
 
-   inline juce::String toName(PID pID) { return juce::String(magic_enum::enum_name(pID).data()); }
-
-   inline juce::String toID(const juce::String& name)
+   inline juce::String getParameterID(PID pID)
    {
-      return name.toLowerCase().removeCharacters(" ");
+      return Utilities::getEnumString(pID).toLowerCase().removeCharacters(" ");
    }
 
-   inline juce::String toID(PID pID) { return toID(toName(pID)); }
-
-   inline juce::String toString(Unit unit)
-   {
-      switch (unit)
-      {
-      case Unit::Db:
-         return "dB";
-      case Unit::Hz:
-         return "hz";
-      default:
-         return "Unknown";
-      }
-   }
-
-   namespace range
-   {
-      inline juce::NormalisableRange<float> biased(float start, float end, float bias) noexcept
-      {
-         // https://www.desmos.com/calculator/ps8q8gftcr
-         const auto a  = bias * .5f + .5f;
-         const auto a2 = 2.f * a;
-         const auto aM = 1.f - a;
-
-         const auto r  = end - start;
-         const auto aR = r * a;
-         if (bias != 0.f)
-            return {
-                  start,
-                  end,
-                  [a2, aM, aR](float min, float, float x) {
-                     const auto denom = aM - x + a2 * x;
-                     if (denom == 0.f)
-                        return min;
-                     return min + aR * x / denom;
-                  },
-                  [a2, aM, aR](float min, float, float x) {
-                     const auto denom = a2 * min + aR - a2 * x - min + x;
-                     if (denom == 0.f)
-                        return 0.f;
-                     auto val = aM * (x - min) / denom;
-                     return val > 1.f ? 1.f : val;
-                  },
-                  [](float min, float max, float x) { return x < min ? min
-                                                           : x > max ? max
-                                                                     : x; }};
-         else
-            return {start, end};
-      }
-
-      inline juce::NormalisableRange<float>
-            stepped(float start, float end, float steps = 1.f) noexcept
-      {
-         return {start, end, steps};
-      }
-
-      inline juce::NormalisableRange<float> toggle() noexcept { return stepped(0.f, 1.f); }
-
-      inline juce::NormalisableRange<float> linear(float start, float end) noexcept
-      {
-         const auto range = end - start;
-
-         return {
-               start,
-               end,
-               [range](float min, float, float normalized) { return min + normalized * range; },
-               [inv = 1.f / range](float min, float, float denormalized) {
-                  return (denormalized - min) * inv;
-               },
-               [](float min, float max, float x) { return juce::jlimit(min, max, x); }};
-      }
-
-      inline juce::NormalisableRange<float>
-            withCentre(float start, float end, float centre) noexcept
-      {
-         const auto r = end - start;
-         const auto v = (centre - start) / r;
-
-         return biased(start, end, 2.f * v - 1.f);
-      }
-   }
-
+   // JUCE allows optional functions to parse text into a value.
+   // This is because some plugins allow users to type in a value.
+   // Ex) "5" could be 5dB or 5hz.
    using ValToStr = std::function<juce::String(float, int)>;
    using StrToVal = std::function<float(const juce::String&)>;
 
@@ -144,14 +65,14 @@ namespace PluginParameters
       inline StrToVal db()
       {
          return [](const juce::String& str) {
-            return str.removeCharacters(toString(Unit::Db)).getFloatValue();
+            return str.removeCharacters(Utilities::getEnumString(Unit::Db)).getFloatValue();
          };
       }
 
       inline StrToVal hz()
       {
          return [](const juce::String& str) {
-            auto s = str.removeCharacters(toString(Unit::Hz));
+            auto s = str.removeCharacters(Utilities::getEnumString(Unit::Hz));
             if (s.endsWith("k"))
             {
                s = s.dropLastCharacters(1);
@@ -172,8 +93,8 @@ namespace PluginParameters
       ValToStr   valToStrFunc;
       StrToVal   strToValFunc;
 
-      const auto name = toName(pID);
-      const auto id   = toID(name);
+      const auto name = Utilities::getEnumString(pID);
+      const auto id   = getParameterID(pID);
 
       switch (unit)
       {
@@ -192,7 +113,7 @@ namespace PluginParameters
             name,
             range,
             defaultVal,
-            toString(unit),
+            Utilities::getEnumString(unit),
             juce::AudioProcessorParameter::Category::genericParameter,
             valToStrFunc,
             strToValFunc));
@@ -205,9 +126,11 @@ namespace PluginParameters
    {
       std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
 
-      createParam(params, PID::Vanilla_Mix, range::linear(-12.f, 12.f), 0.f, Unit::Db);
-      createParam(params, PID::Chocolate_Mix, range::linear(-12.f, 12.f), 0.f, Unit::Db);
-      createParam(params, PID::Strawberry_Mix, range::linear(-12.f, 12.f), 0.f, Unit::Db);
+      createParam(params, PID::Vanilla_Mix, Utilities::Ranges::linear(-12.f, 12.f), 0.f, Unit::Db);
+      createParam(
+            params, PID::Chocolate_Mix, Utilities::Ranges::linear(-12.f, 12.f), 0.f, Unit::Db);
+      createParam(
+            params, PID::Strawberry_Mix, Utilities::Ranges::linear(-12.f, 12.f), 0.f, Unit::Db);
 
       return {params.begin(), params.end()};
    }
