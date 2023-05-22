@@ -1,6 +1,6 @@
 #pragma once
 
-#include "NeopolitanConstants.h"
+
 #include "NeopolitanLookAndFeel.h"
 #include "PluginProcessor.h"
 #include <JuceHeader.h>

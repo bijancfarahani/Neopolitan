@@ -14,7 +14,7 @@
 
 #include "FlavorKnob.h"
 #include "MainScene.h"
-#include "NeopolitanConstants.h"
+
 #include "NeopolitanLookAndFeel.h"
 //==============================================================================
 /**

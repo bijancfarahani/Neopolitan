@@ -1,10 +1,7 @@
 #pragma once
 
-#include <JuceHeader.h>
-//##include "magic"
-//#inclu
 #include "magic_enum.hpp"
-#include <variant>
+#include <JuceHeader.h>
 
 namespace Neopolitan
 {

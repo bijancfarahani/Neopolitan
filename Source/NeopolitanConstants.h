@@ -1,14 +1,5 @@
 #pragma once
-
 namespace Neopolitan
 {
-
-constexpr unsigned Num_Flavors = 3;
-enum Flavor : unsigned
-{
-   Vanilla,
-   Strawberry,
-   Chocolate
-};
-
+constexpr unsigned NUM_FLAVORS = 3;
 }

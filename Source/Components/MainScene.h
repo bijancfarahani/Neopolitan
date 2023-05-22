@@ -24,7 +24,7 @@ public:
    void resized() override;
 
 private:
-   std::array<FlavorKnob, Num_Flavors> _flavorKnobs;
+   std::array<FlavorKnob, NUM_FLAVORS> _flavorKnobs;
 
    juce::TextButton                    _header;
 

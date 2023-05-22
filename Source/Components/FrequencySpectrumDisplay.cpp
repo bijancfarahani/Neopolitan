@@ -14,7 +14,7 @@ void FrequencySpectrumDisplay::paint(juce::Graphics& g)
    g.fillAll(juce::Colours::black);
 
    g.setOpacity(1.0f);
-   g.setColour(juce::Colours::white);
+   g.setColour(juce::Colours::blue);
    _drawFrame(g);
 }
 

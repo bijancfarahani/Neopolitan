@@ -39,15 +39,17 @@ void MainScene::resized()
    _header.setBounds(area.removeFromTop(GUI::HEADER_HEIGHT));
 
    // Flavor Knobs
-   auto       x           = 0.f;
-   auto       y           = 0.f;
-   const auto sliderWidth = static_cast<float>(area.getWidth()) / static_cast<float>(Num_Flavors);
-   for (auto i = 0; i < Num_Flavors; ++i)
+   auto       x = 0.f;
+   auto       y = 0.f;
+   const auto sliderWidth =
+         static_cast<float>(area.getWidth()) / static_cast<float>(_flavorKnobs.size());
+   for (auto& flavorKnob : _flavorKnobs)
    {
-      _flavorKnobs[i].setBounds(
-            juce::Rectangle<float>(x, y, sliderWidth, static_cast<float>(area.getHeight() / 3))
+      flavorKnob.setBounds(
+            juce::Rectangle<float>(
+                  x, y, sliderWidth, static_cast<float>(area.getHeight() / _flavorKnobs.size()))
                   .toNearestInt());
-
+      // Set the starting position in the x-axis.
       x += sliderWidth;
    }
 
