@@ -15,8 +15,8 @@ target_sources("${PROJECT_NAME}"
         PluginParameters.h
         PluginProcessor.h
         PluginProcessor.cpp
-        Spec.h
-        Spec.cpp)
+        FrequencySpectrumAnalyzer.h
+        FrequencySpectrumAnalyzer.cpp)
 
 # Add subdirectories with source files, if present
 add_subdirectory(Components)

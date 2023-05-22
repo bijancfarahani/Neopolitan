@@ -17,7 +17,8 @@ target_sources("${PROJECT_NAME}"
         PluginEditor.h
         PluginEditor.cpp
         NeopolitanLookAndFeel.h
-        SpectrumAnalyser.h
+        FrequencySpectrumDisplay.h
+        FrequencySpectrumDisplay.cpp
 )
 
 # Add subdirectories with source files, if present

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "FlavorKnob.h"
-#include "SpectrumAnalyser.h"
+#include "FrequencySpectrumDisplay.h"
 #include "NeopolitanConstants.h"
 #include "NeopolitanGUIConstants.h"
 #include "NeopolitanLookAndFeel.h"
@@ -18,7 +18,7 @@ namespace Neopolitan
 class MainScene : public juce::Component
 {
 public:
-   MainScene(NeopolitanAudioProcessor&, NeopolitanLookAndFeel&);
+   MainScene(NeopolitanAudioProcessor& pluginProcessor, NeopolitanLookAndFeel& lookAndFeel);
 
    void paint(juce::Graphics& g) override;
    void resized() override;
@@ -28,7 +28,7 @@ private:
 
    juce::TextButton                    _header;
 
-   SpectrumAnalyser _spectrumAnalyser;
+   FrequencySpectrumDisplay            _freqSpectrumDisplay;
 };
 
 }

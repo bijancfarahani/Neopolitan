@@ -1,8 +1,8 @@
-#include "Spec.h"
+#include "FrequencySpectrumAnalyzer.h"
 
 namespace Neopolitan
 {
-void Spec::pushNextSampleIntoFifo(float sample)
+void FrequencySpectrumAnalyzer::pushNextSampleIntoFifo(float sample)
 {
    // if the fifo contains enough data, set a flag to say
    // that the next frame should now be rendered..

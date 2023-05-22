@@ -5,25 +5,27 @@
 namespace Neopolitan
 {
 MainScene::MainScene(NeopolitanAudioProcessor& pluginProcessor, NeopolitanLookAndFeel& lookAndFeel)
-: _flavorKnobs {FlavorKnob(pluginProcessor, PluginParams::PID::Vanilla_Mix, Vanilla, lookAndFeel), FlavorKnob(pluginProcessor, PluginParams::PID::Strawberry_Mix, Strawberry, lookAndFeel), FlavorKnob(pluginProcessor, PluginParams::PID::Chocolate_Mix, Chocolate, lookAndFeel)}
-, _spectrumAnalyser(pluginProcessor.getSpectrumAnalyzer())
+: _flavorKnobs {FlavorKnob(pluginProcessor.getPluginParameter(PluginParameters::PID::Vanilla_Mix), lookAndFeel), FlavorKnob(pluginProcessor.getPluginParameter(PluginParameters::PID::Strawberry_Mix), lookAndFeel), FlavorKnob(pluginProcessor.getPluginParameter(PluginParameters::PID::Chocolate_Mix), lookAndFeel)}
+, _freqSpectrumDisplay(pluginProcessor.getSpectrumAnalyzer())
 {
+   // Header
    _header.setColour(juce::TextButton::buttonColourId, juce::Colours::orange);
    _header.setButtonText("Neopolitan Plugin");
    addAndMakeVisible(_header);
+
+   // Flavor Mix Knobs
    for (auto& knob : _flavorKnobs)
    {
       addAndMakeVisible(knob);
    }
 
-   addAndMakeVisible(_spectrumAnalyser);
+   // Frequency Spectrum Display
+   addAndMakeVisible(_freqSpectrumDisplay);
 }
 
 //==============================================================================
 void MainScene::paint(juce::Graphics& g)
 {
-   // (Our component is opaque, so we must completely fill the background with
-   // a solid colour).
    g.fillAll(juce::Colour(
          GUI::BACKGROUND_COLOUR_RED, GUI::BACKGROUND_COLOUR_GREEN, GUI::BACKGROUND_COLOUR_BLUE));
 }
@@ -36,19 +38,20 @@ void MainScene::resized()
    // Trim off some space for the header.
    _header.setBounds(area.removeFromTop(GUI::HEADER_HEIGHT));
 
-   auto w           = static_cast<float>(getWidth());
-   auto h           = static_cast<float>(getHeight() / 3);
-   auto x           = 0.f;
-   auto y           = 0.f;
-   auto sliderWidth = w / static_cast<float>(Num_Flavors);
+   // Flavor Knobs
+   auto       x           = 0.f;
+   auto       y           = 0.f;
+   const auto sliderWidth = static_cast<float>(area.getWidth()) / static_cast<float>(Num_Flavors);
    for (auto i = 0; i < Num_Flavors; ++i)
    {
-      _flavorKnobs[i].setBounds(juce::Rectangle<float>(x, y, sliderWidth, h).toNearestInt());
+      _flavorKnobs[i].setBounds(
+            juce::Rectangle<float>(x, y, sliderWidth, static_cast<float>(area.getHeight() / 3))
+                  .toNearestInt());
 
       x += sliderWidth;
    }
 
-   _spectrumAnalyser.setBounds(area.removeFromBottom(400));
+   _freqSpectrumDisplay.setBounds(area.removeFromBottom(400));
 }
 
 }

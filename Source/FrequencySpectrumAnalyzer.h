@@ -2,16 +2,19 @@
 #include <JuceHeader.h>
 namespace Neopolitan
 {
-class Spec
+class FrequencySpectrumAnalyzer
 {
 public:
    static constexpr auto fftOrder  = 11;            // [1]
    static constexpr auto fftSize   = 1 << fftOrder; // [2]
    static constexpr auto scopeSize = 512;           // [3]
 
-   Spec() : forwardFFT(fftOrder), window(fftSize, juce::dsp::WindowingFunction<float>::hann) {}
+   FrequencySpectrumAnalyzer()
+   : forwardFFT(fftOrder)
+   , window(fftSize, juce::dsp::WindowingFunction<float>::hann)
+   {}
 
-   ~Spec() = default;
+   ~FrequencySpectrumAnalyzer() = default;
 
    juce::dsp::WindowingFunction<float>& getWindow() { return window; }
    juce::dsp::FFT&                      getForwardFFT() { return forwardFFT; }
