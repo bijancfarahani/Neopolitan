@@ -37,11 +37,14 @@ private:
    // access the processor object that created it.
    NeopolitanAudioProcessor& audioProcessor;
 
+   // This probably needs to move somewhere else.  I think each visual
+   // component like a knob should hold one.
    NeopolitanLookAndFeel _lookAndFeel;
 
+   // We only have one scene currently and it get's the full size of
+   // this object.
    MainScene _mainScene;
 
-   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(
-      NeopolitanAudioProcessorEditor)
+   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NeopolitanAudioProcessorEditor)
 };
 }

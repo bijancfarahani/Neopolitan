@@ -12,7 +12,7 @@ class SpectrumAnalyser
 , juce::Timer
 {
 public:
-   SpectrumAnalyser(Spec& spec) : _spec(spec) {}
+   SpectrumAnalyser(Spec& spec) : _spec(spec) { startTimerHz(30); }
    ~SpectrumAnalyser() = default;
 
    void paint(juce::Graphics& g) override
