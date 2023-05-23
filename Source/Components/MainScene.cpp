@@ -5,7 +5,7 @@
 namespace Neopolitan
 {
 MainScene::MainScene(NeopolitanAudioProcessor& pluginProcessor, NeopolitanLookAndFeel& lookAndFeel)
-: _flavorKnobs {FlavorKnob(pluginProcessor.getPluginParameter(PluginParameters::PID::Vanilla_Mix), lookAndFeel), FlavorKnob(pluginProcessor.getPluginParameter(PluginParameters::PID::Strawberry_Mix), lookAndFeel), FlavorKnob(pluginProcessor.getPluginParameter(PluginParameters::PID::Chocolate_Mix), lookAndFeel)}
+: _flavorKnobs {FlavorKnob(pluginProcessor.getPluginParameter(PluginParameters::PID::Vanilla_Gain), lookAndFeel), FlavorKnob(pluginProcessor.getPluginParameter(PluginParameters::PID::Strawberry_Gain), lookAndFeel), FlavorKnob(pluginProcessor.getPluginParameter(PluginParameters::PID::Chocolate_Gain), lookAndFeel)}
 , _freqSpectrumDisplay(pluginProcessor.getSpectrumAnalyzer())
 {
    // Header
