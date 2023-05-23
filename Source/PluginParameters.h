@@ -13,11 +13,11 @@ namespace PluginParameters
    // Add all the controls for our plugin here.
    enum class PID
    {
-      Vanilla_Mix,
-      Strawberry_Mix,
-      Chocolate_Mix
+      Vanilla_Gain,
+      Strawberry_Gain,
+      Chocolate_Gain
    };
-   constexpr std::size_t NumParams = magic_enum::enum_count<PID>();
+   constexpr std::size_t NUM_PLUGIN_PARAMETERS = magic_enum::enum_count<PID>();
 
    enum class Unit
    {
@@ -27,7 +27,7 @@ namespace PluginParameters
 
    inline juce::String getParameterID(PID pID)
    {
-      return Utilities::getEnumString(pID).toLowerCase().removeCharacters(" ");
+      return NeoUtils::getEnumString(pID).toLowerCase().removeCharacters(" ");
    }
 
    // JUCE allows optional functions to parse text into a value.
@@ -65,14 +65,14 @@ namespace PluginParameters
       inline StrToVal db()
       {
          return [](const juce::String& str) {
-            return str.removeCharacters(Utilities::getEnumString(Unit::Db)).getFloatValue();
+            return str.removeCharacters(NeoUtils::getEnumString(Unit::Db)).getFloatValue();
          };
       }
 
       inline StrToVal hz()
       {
          return [](const juce::String& str) {
-            auto s = str.removeCharacters(Utilities::getEnumString(Unit::Hz));
+            auto s = str.removeCharacters(NeoUtils::getEnumString(Unit::Hz));
             if (s.endsWith("k"))
             {
                s = s.dropLastCharacters(1);
@@ -93,7 +93,7 @@ namespace PluginParameters
       ValToStr   valToStrFunc;
       StrToVal   strToValFunc;
 
-      const auto name = Utilities::getEnumString(pID);
+      const auto name = NeoUtils::getEnumString(pID);
       const auto id   = getParameterID(pID);
 
       switch (unit)
@@ -108,15 +108,24 @@ namespace PluginParameters
          break;
       }
 
+      // To be honest, I don't know what exactly this syntax is.
+      // Type {} .withX(Argument).withY(Argument);
+      // See https://forum.juce.com/t/proper-syntax-for-stringfromint-lambda-function-for-audioparameterint/51140
+      auto attributes =
+            juce::AudioParameterFloatAttributes {}
+                  .withStringFromValueFunction(valToStrFunc)
+                  .withValueFromStringFunction(strToValFunc)
+                  .withLabel(NeoUtils::getEnumString(unit))
+                  .withCategory(juce::AudioProcessorParameter::Category::genericParameter);
+      // TODO: Investigate parameter automation.
+      //.withAutomatable(true);
+
       vec.emplace_back(std::make_unique<juce::AudioParameterFloat>(
             juce::ParameterID {id, NEOPOLITAN_PLUGIN_PARAMETER_VERSION},
             name,
             range,
             defaultVal,
-            Utilities::getEnumString(unit),
-            juce::AudioProcessorParameter::Category::genericParameter,
-            valToStrFunc,
-            strToValFunc));
+            attributes));
    }
 
    // Factory of sorts for all the 'knobs and switches' and whatever
@@ -126,11 +135,11 @@ namespace PluginParameters
    {
       std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
 
-      createParam(params, PID::Vanilla_Mix, Utilities::Ranges::linear(-12.f, 12.f), 0.f, Unit::Db);
+      createParam(params, PID::Vanilla_Gain, NeoUtils::Ranges::linear(-12.f, 12.f), 0.f, Unit::Db);
       createParam(
-            params, PID::Chocolate_Mix, Utilities::Ranges::linear(-12.f, 12.f), 0.f, Unit::Db);
+            params, PID::Chocolate_Gain, NeoUtils::Ranges::linear(-12.f, 12.f), 0.f, Unit::Db);
       createParam(
-            params, PID::Strawberry_Mix, Utilities::Ranges::linear(-12.f, 12.f), 0.f, Unit::Db);
+            params, PID::Strawberry_Gain, NeoUtils::Ranges::linear(-12.f, 12.f), 0.f, Unit::Db);
 
       return {params.begin(), params.end()};
    }

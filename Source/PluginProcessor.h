@@ -8,7 +8,9 @@
 
 #pragma once
 
+#include "FlavorNoiseGenerator.h"
 #include "FrequencySpectrumAnalyzer.h"
+#include "NeopolitanConstants.h"
 #include "PluginParameters.h"
 #include <JuceHeader.h>
 
@@ -67,15 +69,23 @@ public:
       return *(_pluginParameters[magic_enum::enum_index<PluginParameters::PID>(pid).value()]);
    }
 
-   FrequencySpectrumAnalyzer& getSpectrumAnalyzer() { return _spec; }
+   FrequencySpectrumAnalyzer& getSpectrumAnalyzer() { return _freqSpecAnalyzer; }
 
 private:
    //==============================================================================
 
-   juce::AudioProcessorValueTreeState                                   apvts;
-   std::array<juce::RangedAudioParameter*, PluginParameters::NumParams> _pluginParameters;
-   juce::Random                                                         _random;
-   FrequencySpectrumAnalyzer                                            _spec;
+   // Data structure to maintain our plugin parameters in a formalized semantic.
+   juce::AudioProcessorValueTreeState apvts;
+
+   // List of pointers to our plugin parameters.  These reference the same objects
+   // in apvts but can be indexed via enum value rather than by string value.
+   std::array<juce::RangedAudioParameter*, PluginParameters::NUM_PLUGIN_PARAMETERS>
+                                                 _pluginParameters;
+
+   std::array<FlavorNoiseGenerator, NUM_FLAVORS> _flavorNoiseGenerators;
+
+   // Performs DSP on samples to generate a visual of the frequency spectrum.
+   FrequencySpectrumAnalyzer _freqSpecAnalyzer;
 
    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NeopolitanAudioProcessor)
 };

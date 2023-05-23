@@ -25,14 +25,15 @@ NeopolitanAudioProcessor::NeopolitanAudioProcessor()
                        )
 , apvts(*this, nullptr, "Parameters", PluginParameters::createParameterLayout())
 , _pluginParameters()
-, _spec()
+, _flavorNoiseGenerators {apvts.getParameter(PluginParameters::getParameterID(PluginParameters::PID::Vanilla_Gain)), apvts.getParameter(PluginParameters::getParameterID(PluginParameters::PID::Strawberry_Gain)), apvts.getParameter(PluginParameters::getParameterID(PluginParameters::PID::Chocolate_Gain))}
+, _freqSpecAnalyzer()
 #endif
 {
-   for (auto i = 0; i < PluginParameters::NumParams; ++i)
+   for (auto i = 0; i < _pluginParameters.size(); ++i)
    {
+      // TODO: Cleanup with magic enum?
       const auto pID       = static_cast<PluginParameters::PID>(i);
-      const auto id        = PluginParameters::getParameterID(pID);
-      _pluginParameters[i] = apvts.getParameter(id);
+      _pluginParameters[i] = apvts.getParameter(PluginParameters::getParameterID(pID));
    }
 }
 
@@ -147,29 +148,20 @@ void NeopolitanAudioProcessor::processBlock(
    // the samples and the outer loop is handling the channels.
    // Alternatively, you can process the samples with the channels
    // interleaved by keeping the same state.
-   auto applyGain = [this](const auto& pID) {
-      // Apply gain.
-      const auto gainWetPID = static_cast<int>(pID);
-      const auto gainDbNorm = _pluginParameters[gainWetPID]->getValue();
-      const auto gainDb =
-            _pluginParameters[gainWetPID]->getNormalisableRange().convertFrom0to1(gainDbNorm);
-      const auto gain = juce::Decibels::decibelsToGain(gainDb);
-      return gain;
-   };
-
    for (int channel = 0; channel < totalNumInputChannels; ++channel)
    {
       auto* channelData = buffer.getWritePointer(channel);
 
-      // Fill the required number of samples with noise between -0.125 and +0.125
       for (auto sample = 0; sample < buffer.getNumSamples(); ++sample)
       {
-         auto whiteNoiseSample = _random.nextFloat() * 0.25f - 0.125f;
-         // apply flavor gain
-         whiteNoiseSample    *= applyGain(PluginParameters::PID::Vanilla_Mix);
-         channelData[sample]  = whiteNoiseSample;
+         // Add in each of our flavor samples.
+         for (auto& flavorNoiseGen : _flavorNoiseGenerators)
+         {
+            channelData[sample] += flavorNoiseGen.getProcessedSample();
+         }
 
-         _spec.pushNextSampleIntoFifo(channelData[sample]);
+         // Push a copy of the processed/finished sample to the frequency analyzer.
+         _freqSpecAnalyzer.pushNextSampleIntoFifo(channelData[sample]);
       }
    }
 }

@@ -9,17 +9,22 @@ enum class Unit
    Db,
    Hz
 };
-namespace Utilities
+namespace NeoUtils
 {
    template <typename E>
    concept EnumType = std::is_enum_v<E>;
 
+   // Wrapper functions around magic_enum.
    template <EnumType Enum>
-   juce::String getEnumString(Enum e)
+   // TODO: Can we return juce::StringRef instead?
+   [[nodiscard]] juce::String getEnumString(Enum e)
    {
       return juce::String(magic_enum::enum_name(e).data());
    }
 
+   // TODO: We can use concepts to generalize these to floating point (std::is_floating_point)
+   // or possibily to integers as well (so std::is_arithmetic).  Try making an integer-ranged knob
+   // and see how the GUI behaves.
    namespace Ranges
    {
       inline juce::NormalisableRange<float> biased(float start, float end, float bias) noexcept

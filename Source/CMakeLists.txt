@@ -1,5 +1,6 @@
 target_include_directories("${PROJECT_NAME}" PRIVATE
   ${CMAKE_SOURCE_DIR}/Source/Components
+  ${CMAKE_SOURCE_DIR}/Source/Audio
 )
 
 
@@ -17,3 +18,4 @@ target_sources("${PROJECT_NAME}"
 
 # Add subdirectories with source files, if present
 add_subdirectory(Components)
+add_subdirectory(Audio)
