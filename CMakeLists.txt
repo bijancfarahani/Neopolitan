@@ -74,23 +74,13 @@ option(JUCE_ENABLE_MODULE_SOURCE_GROUPS "Show all module sources in IDE projects
 
 ### Dependency management ###
 
-
-# We use Magic Enum to handle tedious Plugin Parameter boilerplate.
-CPMAddPackage(
-    NAME magic_enum
-    GITHUB_REPOSITORY Neargye/magic_enum
-    GIT_TAG v0.8.2
-)
-
-
-include(FetchContent)
-
 # Keep dependencies outside of the "Build" directory.
 # This allows to do a clean build of the project without re-downloading or
 # rebuilding the dependencies.
+include(FetchContent)
 set(FETCHCONTENT_BASE_DIR "${PROJECT_SOURCE_DIR}/Libs" CACHE PATH "External dependencies path." FORCE)
 
-set(LIB_JUCE_TAG "7.0.5")
+set(LIB_JUCE_TAG "8.0.6")
 FetchContent_Declare(juce
     GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
     GIT_TAG        ${LIB_JUCE_TAG}
@@ -99,8 +89,19 @@ FetchContent_Declare(juce
     SOURCE_DIR     "${FETCHCONTENT_BASE_DIR}/JUCE"
     SUBBUILD_DIR   "${FETCHCONTENT_BASE_DIR}/JUCE-Subbuild"
     BINARY_DIR     "${FETCHCONTENT_BASE_DIR}/JUCE-Build")
-
 FetchContent_MakeAvailable(juce)
+
+# We use Magic Enum to handle tedious Plugin Parameter boilerplate.
+FetchContent_Declare(magic_enum
+    GIT_REPOSITORY https://github.com/Neargye/magic_enum.git
+    GIT_TAG "v0.9.7"
+    GIT_SHALLOW    TRUE
+    GIT_CONFIG     advice.detachedHead=false    # Disable detached HEAD warning for fetching a specific tag
+    SOURCE_DIR     "${FETCHCONTENT_BASE_DIR}/magic_enum"
+    SUBBUILD_DIR   "${FETCHCONTENT_BASE_DIR}/magic_enum-Subbuild"
+    BINARY_DIR     "${FETCHCONTENT_BASE_DIR}/magic_enum-Build")
+FetchContent_MakeAvailable(magic_enum)
+
 
 
 ### Plugin Project Setup ###

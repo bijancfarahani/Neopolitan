@@ -8,7 +8,7 @@ class FlavorNoiseGenerator
 public:
    FlavorNoiseGenerator(juce::RangedAudioParameter* flavorGainParameter)
    : _flavorGainParameter(flavorGainParameter)
-   {}
+   {_flavorGainParameter->setValue(-12);}
    ~FlavorNoiseGenerator() = default;
 
    float getProcessedSample()
